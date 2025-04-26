@@ -1,4 +1,4 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Star-dos-scripts/OrionLibYellow/refs/heads/main/README.md')))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Davizinhofprest/Jaoohub/refs/heads/main/Jaoohub/Orion.lua')))()
 local Window = OrionLib:MakeWindow({
     Name = "MATRIX HUB V2 : By Team Cartola Center🎩",
     HidePremium = false, 
@@ -14,50 +14,6 @@ local Window = OrionLib:MakeWindow({
 })
 
 
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "ScreenGui"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
-ScreenGui.ResetOnSpawn = false
-
-local Toggle = Instance.new("ImageButton")
-Toggle.Name = "Toggle"
-Toggle.Parent = ScreenGui
-Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-Toggle.BackgroundTransparency = 0.5
-Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
-Toggle.Size = UDim2.new(0, 50, 0, 50)
-Toggle.Image = "rbxassetid://86898373680592"
-Toggle.Draggable = true
-
-local Corner = Instance.new("UICorner")
-Corner.CornerRadius = UDim.new(0.1, 0)
-Corner.Parent = Toggle
-
-local isOn = false
-local selectedPlayerName = nil
-
-local function onButtonClicked()
-    if gethui():FindFirstChild("Orion") then
-        gethui().Orion.Enabled = not gethui().Orion.Enabled
-    end
-end
-
-local function offButtonClicked()
-    if gethui():FindFirstChild("Orion") then
-        gethui().Orion.Enabled = not gethui().Orion.Enabled
-    end
-end
-
-Toggle.MouseButton1Click:Connect(function()
-    isOn = not isOn
-    if isOn then
-        Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        onButtonClicked()
-    else
-        Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        offButtonClicked()
-    end
-end)
 
 
 local Tab = Window:MakeTab({
@@ -388,4 +344,62 @@ Tab:AddButton({
 game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
       		print("button pressed")
   	end    
+})
+
+
+local Tab = Window:MakeTab({
+	Name = "Avisa se um player sair/entra",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+-- Conectar eventos de jogador removido
+game.Players.PlayerRemoving:Connect(function(player)
+updatePlayerList()
+if avisoToggle then
+OrionLib:MakeNotification({
+Name = "Aviso",
+Content = player.Name .. " saiu do jogo",
+Image = "rbxassetid://4483345998",
+Time = 5
+})
+end
+end)
+
+-- Conectar eventos de jogador adicionado
+game.Players.PlayerAdded:Connect(function(player)
+updatePlayerList()
+if avisoToggle then
+OrionLib:MakeNotification({
+Name = "AVISO!",
+Content = player.Name .. " entrou no jogo",
+Image = "rbxassetid://4483345998",
+Time = 5
+})
+end
+end)
+
+-- FunÃ§Ã£o para manter a lista de jogadores atualizada
+local function maintainPlayerList()
+while wait(1) do
+updatePlayerList()
+end
+end
+
+-- Iniciar a funÃ§Ã£o de manutenÃ§Ã£o da lista de jogadores
+spawn(maintainPlayerList)
+
+-- Adicionar toggle para avisos
+Tab:AddToggle({
+Name = "Avisar se um player entrar ou sair",
+Default = false,
+Callback = function(state)
+avisoToggle = state
+end
 })
