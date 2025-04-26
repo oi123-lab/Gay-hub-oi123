@@ -1,18 +1,64 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Star-dos-scripts/OrionLibYellow/refs/heads/main/README.md')))()
+local Window = OrionLib:MakeWindow({
+    Name = "MATRIX HUB V2 : By Team Cartola Center🎩",
+    HidePremium = false, 
+    SaveConfig = true, 
+    ConfigFolder = "MatrixHubConfigs",
+    IntroEnabled = true,
+    IntroText = "Team CARTOLA CENTER🎩",
+    IntroIcon = "rbxassetid://86898373680592",
+    Icon = "rbxassetid://86898373680592",
+    CloseCallback = function() 
+        print("MATRIX HUB V2 fechado")
+    end
+})
 
-local Window = OrionLib:MakeWindow({Name = "MATRIX HUB V2 : BY TEAM CARTOLA CENTER🎩", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
---[[
-Name = <MATRIX HUB FLING BOAT🛳> - The name of the UI.
-HidePremium = <bool> - Whether or not the user details shows Premium status or not.
-SaveConfig = <bool> - Toggles the config saving in the UI.
-ConfigFolder = <string> - The name of the folder where the configs are saved.
-IntroEnabled = <bool> - Whether or not to show the intro animation.
-IntroText = <string> - Text to show in the intro animation.
-IntroIcon = <string> - URL to the image you want to use in the intro animation.
-Icon = <string> - URL to the image you want displayed on the window.
-CloseCallback = <function> - Function to execute when the window is closed.
-]]
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ScreenGui"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
+
+local Toggle = Instance.new("ImageButton")
+Toggle.Name = "Toggle"
+Toggle.Parent = ScreenGui
+Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Toggle.BackgroundTransparency = 0.5
+Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
+Toggle.Size = UDim2.new(0, 50, 0, 50)
+Toggle.Image = "rbxassetid://86898373680592"
+Toggle.Draggable = true
+
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(0.1, 0)
+Corner.Parent = Toggle
+
+local isOn = false
+local selectedPlayerName = nil
+
+local function onButtonClicked()
+    if gethui():FindFirstChild("Orion") then
+        gethui().Orion.Enabled = not gethui().Orion.Enabled
+    end
+end
+
+local function offButtonClicked()
+    if gethui():FindFirstChild("Orion") then
+        gethui().Orion.Enabled = not gethui().Orion.Enabled
+    end
+end
+
+Toggle.MouseButton1Click:Connect(function()
+    isOn = not isOn
+    if isOn then
+        Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        onButtonClicked()
+    else
+        Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        offButtonClicked()
+    end
+end)
+
 
 local Tab = Window:MakeTab({
 	Name = "BEM VINDO",
