@@ -1,6 +1,6 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Star-dos-scripts/OrionLibYellow/refs/heads/main/README.md')))()
 
-local Window = OrionLib:MakeWindow({Name = "MATRIX HUB FLING BOAT🛳", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
+local Window = OrionLib:MakeWindow({Name = "MATRIX HUB V2 : BY TEAM CARTOLA CENTER🎩", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 --[[
 Name = <MATRIX HUB FLING BOAT🛳> - The name of the UI.
