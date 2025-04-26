@@ -349,15 +349,223 @@ Icon = <string> - The icon of the tab.
 PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
-
 Tab:AddButton({
-	Name = "SOUND ALL🚨♨️",
+	Name = "Pegar Sniper (Necessário)",
 	Callback = function()
- loadstring(game:HttpGet("https://raw.githubusercontent.com/ameicaa0/brookhaven/refs/heads/main/brookhaven%20script.txt"))()
-      		print("button pressed")
+local args = {
+    [1] = "PickingTools",
+    [2] = "Sniper"
+}
+
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+
   	end    
 })
 
+-- TextBox para inserir o ID
+Tab:AddTextbox({
+    Name = "Digite o ID do Áudio",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(value)
+        Value = value
+    end
+})
+
+-- Botão para executar a função uma vez
+Tab:AddButton({
+    Name = "Tocar Áudio",
+    Callback = function()
+        if Value then
+            local args = {
+                [1] = game:GetService("Players").LocalPlayer.Character.Sniper.Handle,
+                [2] = Value,
+                [3] = 1
+            }
+            game:GetService("ReplicatedStorage").RE:FindFirstChild("1Gu1nSound1s"):FireServer(unpack(args))
+            
+            local soundId = "rbxassetid://" .. Value
+            local sound = Instance.new("Sound")
+            sound.SoundId = soundId
+            sound.Parent = game.Workspace
+            sound.Volume = 0.3
+            
+            sound:Play()
+            wait(3)
+            sound:Stop()
+        else
+            OrionLib:MakeNotification({
+                Name = "Erro",
+                Content = "Insira um ID válido antes de executar.",
+                Image = "rbxassetid://132225387260946",
+                Time = 5
+            })
+        end
+    end
+})
+
+-- Toggle para ativar/desativar o loop
+Tab:AddToggle({
+    Name = "Loop Audio",
+    Default = false,
+    Callback = function(value)
+        looping = value
+        
+        while looping do
+            if Value then
+                local args = {
+                    [1] = game:GetService("Players").LocalPlayer.Character.Sniper.Handle,
+                    [2] = Value,
+                    [3] = 1
+                }
+                game:GetService("ReplicatedStorage").RE:FindFirstChild("1Gu1nSound1s"):FireServer(unpack(args))
+                
+                local soundId = "rbxassetid://" .. Value
+                local sound = Instance.new("Sound")
+                sound.SoundId = soundId
+                sound.Parent = game.Workspace
+                sound.Volume = 0.1
+                
+                sound:Play()
+                wait(3)
+                sound:Stop()
+            else
+                OrionLib:MakeNotification({
+                    Name = "Erro",
+                    Content = "Insira um ID antes de ativar o loop som.",
+                    Image = "rbxassetid://132225387260946",
+                    Time = 5
+                })
+                break
+            end
+            wait(1) -- Intervalo entre execuções
+        end
+    end
+})
+
+Tab:AddParagraph("Atenção","Você deve segurar a <font color='rgb(0, 255, 0)'>Sniper</font> para que o áudio seja executado corretamente de forma FE, suporta o som por 3 segundos")
+
+local Section = Tab:AddSection({
+    Name = "Áudio All"
+})
+
+Tab:AddButton({
+	Name = "Pegar Sniper (Necessário)",
+	Callback = function()
+local args = {
+    [1] = "PickingTools",
+    [2] = "Sniper"
+}
+
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(unpack(args))
+
+  	end    
+})
+
+-- Variáveis
+local Value = ""  -- ID do som será inserido pelo usuário
+local Speed = 1   -- Velocidade padrão (pode ser ajustada)
+local isPlaying = false  -- Estado do toggle
+local interval = 0.1  -- Tempo padrão entre execuções
+
+-- Função para tocar o som localmente
+local function playSoundLocally(Value, Speed)
+    local soundId = "rbxassetid://" .. Value
+    local sound = Instance.new("Sound")
+    sound.SoundId = soundId
+    sound.Parent = game.Workspace
+    sound.Volume = 0.3
+    sound.PlaybackSpeed = Speed  -- Velocidade do som
+
+    sound:Play()
+
+    -- O som será destruído após 3 segundos, mas isso não impede a execução contínua
+    game:GetService("Debris"):AddItem(sound, 3)
+end
+
+-- Função para enviar o evento ao servidor
+local function playSoundServer(Value, Speed)
+    local args = {
+        [1] = workspace,
+        [2] = Value,
+        [3] = Speed
+    }
+    game:GetService("ReplicatedStorage").RE:FindFirstChild("1Gu1nSound1s"):FireServer(unpack(args))
+end
+
+-- TextBox para inserir o ID do som
+Tab:AddTextbox({
+    Name = "ID do Áudio",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(value)
+        Value = value  -- Atualizando o ID do som
+    end
+})
+
+-- TextBox para inserir a velocidade do som
+Tab:AddTextbox({
+    Name = "Velocidade do Áudio",
+    Default = "1",
+    TextDisappear = true,
+    Callback = function(value)
+        Speed = tonumber(value) or 1  -- Garantindo que a velocidade seja um número, se não for, usa 1
+    end
+})
+
+-- Botão para tocar o som uma vez
+Tab:AddButton({
+    Name = "Tocar Áudio",
+    Callback = function()
+        if Value == "" then
+            print("Você não colocou nemhum ID de Áudio")
+        else
+            playSoundLocally(Value, Speed)  -- Toca o som localmente
+            playSoundServer(Value, Speed)  -- Envia o evento ao servidor
+        end
+    end
+})
+
+-- Toggle para tocar o som repetidamente
+Tab:AddToggle({
+    Name = "Loop Áudio All",
+    Default = false,
+    Callback = function(state)
+        isPlaying = state  -- Atualizando o estado do toggle
+        if isPlaying then
+            -- Loop para tocar o som enquanto o toggle estiver ativado
+            coroutine.wrap(function()
+                while isPlaying do
+                    if Value ~= "" then
+                        playSoundLocally(Value, Speed)  -- Toca o som localmente
+                        playSoundServer(Value, Speed)  -- Envia o evento ao servidor
+                    else
+                        print("Você não colocou nemhum ID de Áudio")
+                        break
+                    end
+                    wait(interval)  -- Usa o intervalo definido pelo usuário
+                end
+            end)()
+        end
+    end
+})
+
+-- TextBox para ajustar o intervalo do toggle
+Tab:AddTextbox({
+    Name = "Intervalo para o Loop Áudio All",
+    Default = "0.5",
+    TextDisappear = true,
+    Callback = function(value)
+        interval = tonumber(value) or 0.5  -- Atualiza o intervalo, valor padrão é 0.1
+        if interval <= 0 then
+            interval = 0.5  -- Garante que o intervalo não seja zero ou negativo
+            print("Intervalo do Loop Áudio All Definido")
+        end
+    end
+})
+
+
+ 
 --[[
 Name = <string> - The name of the button.
 Callback = <function> - The function of the button.
