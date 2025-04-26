@@ -13,7 +13,50 @@ local Window = OrionLib:MakeWindow({
     end
 })
 
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ScreenGui"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ResetOnSpawn = false
 
+local Toggle = Instance.new("ImageButton")
+Toggle.Name = "Toggle"
+Toggle.Parent = ScreenGui
+Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Toggle.BackgroundTransparency = 0.5
+Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
+Toggle.Size = UDim2.new(0, 50, 0, 50)
+Toggle.Image = "rbxassetid://10709753272"
+Toggle.Draggable = true
+
+local Corner = Instance.new("UICorner")
+Corner.CornerRadius = UDim.new(0.1, 0)
+Corner.Parent = Toggle
+
+local isOn = false
+local selectedPlayerName = nil
+
+local function onButtonClicked()
+    if gethui():FindFirstChild("Orion") then
+        gethui().Orion.Enabled = not gethui().Orion.Enabled
+    end
+end
+
+local function offButtonClicked()
+    if gethui():FindFirstChild("Orion") then
+        gethui().Orion.Enabled = not gethui().Orion.Enabled
+    end
+end
+
+Toggle.MouseButton1Click:Connect(function()
+    isOn = not isOn
+    if isOn then
+        Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        onButtonClicked()
+    else
+        Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        offButtonClicked()
+    end
+end)
 
 
 local Tab = Window:MakeTab({
@@ -347,59 +390,101 @@ game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(un
 })
 
 
-local Tab = Window:MakeTab({
-	Name = "Avisa se um player sair/entra",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
+Name = "Teleports",
+Icon = "rbxassetid://4483345998",
+PremiumOnly = false
 })
-
---[[
-Name = <string> - The name of the tab.
-Icon = <string> - The icon of the tab.
-PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
-]]
-
--- Conectar eventos de jogador removido
-game.Players.PlayerRemoving:Connect(function(player)
-updatePlayerList()
-if avisoToggle then
-OrionLib:MakeNotification({
-Name = "Aviso",
-Content = player.Name .. " saiu do jogo",
-Image = "rbxassetid://4483345998",
-Time = 5
+local Section = Tab:AddSection({
+    Name = "locates"
 })
-end
-end)
+Tab:AddButton({
+Name = "Lobby",
+Callback = function()
+ local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
 
--- Conectar eventos de jogador adicionado
-game.Players.PlayerAdded:Connect(function(player)
-updatePlayerList()
-if avisoToggle then
-OrionLib:MakeNotification({
-Name = "AVISO!",
-Content = player.Name .. " entrou no jogo",
-Image = "rbxassetid://4483345998",
-Time = 5
-})
-end
-end)
-
--- FunÃ§Ã£o para manter a lista de jogadores atualizada
-local function maintainPlayerList()
-while wait(1) do
-updatePlayerList()
-end
-end
-
--- Iniciar a funÃ§Ã£o de manutenÃ§Ã£o da lista de jogadores
-spawn(maintainPlayerList)
-
--- Adicionar toggle para avisos
-Tab:AddToggle({
-Name = "Avisar se um player entrar ou sair",
-Default = false,
-Callback = function(state)
-avisoToggle = state
+hrp.CFrame = CFrame.new(7.159717559814453, 3.3000009059906006, 19.785301208496094)
 end
 })
+Tab:AddButton({
+Name = "Wather",
+Callback = function()
+ local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
+
+hrp.CFrame = CFrame.new(-72.37123107910156, -10.816083908081055, 112.93341827392578)
+end
+})
+Tab:AddButton({
+Name = "Edge",
+Callback = function()
+ local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
+
+hrp.CFrame = CFrame.new(-1354.4154052734375, 76.11813354492188, -1278.5859375)
+end
+})
+Tab:AddButton({
+Name = "Void",
+Callback = function()
+     local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
+
+hrp.CFrame = CFrame.new(9999999827968, 9999999827968, 9999999827968)
+end
+})
+Tab:AddButton({
+Name = "Commercial 1",
+Callback = function()
+ local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
+
+hrp.CFrame = CFrame.new(-242.68215942382812, 89.68680572509766, -549.6495361328125)
+end
+})
+Tab:AddButton({
+Name = "Commercial 2",
+Callback = function()
+ local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
+
+hrp.CFrame = CFrame.new(-630.480712890625, 26.586822509765625, 365.14093017578125)
+end
+})
+Tab:AddButton({
+Name = "Secret 1",
+Callback = function()
+ local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
+
+hrp.CFrame = CFrame.new(223.24264526367188, -37.5954704284668, -153.50656127929688)
+end
+})
+Tab:AddButton({
+Name = "Secret 2",
+Callback = function()
+ local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
+
+hrp.CFrame = CFrame.new(-350.3148498535156, 45.385169982910156, -123.7399673461914)
+end
+})
+Tab:AddButton({
+Name = "Secret 3",
+Callback = function()
+ local plr = game.Players.LocalPlayer
+local char = plr.Character
+local hrp = char.HumanoidRootPart
+
+hrp.CFrame = CFrame.new(-271.9717712402344, 22.992469787597656, 1115.3104248046875)
+end
+})
+
