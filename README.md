@@ -29,7 +29,7 @@ PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
 local Tab = Window:MakeTab({
-Name = "boat fling",
+Name = "boat fling🛳",
 
 Icon = "rbxassetid://4483345998",
 
@@ -65,7 +65,7 @@ end
 
 Tab:AddButton({
 
-Name = " fling boat",
+Name = " fling boat🛳",
 
 Callback = function()
 
@@ -278,7 +278,7 @@ PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 
 
 Tab:AddButton({
-	Name = "FLING BY NOT LEGITTY",
+	Name = "FLING BY NOT LEGITTY👾",
 	Callback = function()
  loadstring(game:HttpGet("https://raw.githubusercontent.com/CLEITI6966/HUB/refs/heads/main/fling.lua"))()
       		print("button pressed")
@@ -290,3 +290,30 @@ Name = <string> - The name of the button.
 Callback = <function> - The function of the button.
 ]]
 
+
+
+local Tab = Window:MakeTab({
+	Name = "SOUND ALL🚨",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+
+Tab:AddButton({
+	Name = "SOUND ALL🚨♨️",
+	Callback = function()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/ameicaa0/brookhaven/refs/heads/main/brookhaven%20script.txt"))()
+      		print("button pressed")
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
