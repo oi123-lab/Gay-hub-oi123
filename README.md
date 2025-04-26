@@ -25,7 +25,7 @@ Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BackgroundTransparency = 0.5
 Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
 Toggle.Size = UDim2.new(0, 50, 0, 50)
-Toggle.Image = "rbxassetid://10709753272"
+Toggle.Image = "rbxassetid://86898373680592"
 Toggle.Draggable = true
 
 local Corner = Instance.new("UICorner")
@@ -61,7 +61,7 @@ end)
 
 local Tab = Window:MakeTab({
 	Name = "BEM VINDO",
-	Icon = "rbxassetid://4483345998",
+	Icon = "rbxassetid://10709751939",
 	PremiumOnly = false
 })
 
