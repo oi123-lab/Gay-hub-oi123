@@ -966,3 +966,121 @@ Tab:AddButton({
     end
     end
 })
+
+
+local Tab = Window:MakeTab({
+	Name = "LAG SERVER[OP]",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+
+local Section = Tab:AddSection({
+	Name = "Lag Server"
+})
+
+-- Variáveis
+local isLooping = false -- Controle do loop
+local originalPosition = nil -- Para armazenar a posição original do jogador
+local player = game.Players.LocalPlayer -- Referência ao jogador local
+local selectedDevice = "Celular" -- Valor padrão do dispositivo
+
+Tab:AddDropdown({
+    Name = "Selecionar o Que Vai Usar Para Lagar o Servidor",
+    Default = "Celular",
+    Options = {"Laptop", "Celular", "Caça Fantasmas", "Celular e Laptop"},
+    Callback = function(Value)
+        selectedDevice = Value -- Atualiza o dispositivo selecionado com base na escolha do usuário
+    end
+})
+
+-- Função para iniciar o loop
+local function startLoop()
+    if not isLooping then
+        isLooping = true
+        originalPosition = player.Character and player.Character:FindFirstChild("HumanoidRootPart") and player.Character.HumanoidRootPart.Position
+
+        -- Define coordenadas baseadas no dispositivo selecionado
+        local teleportPosition
+        if selectedDevice == "Laptop" then
+            teleportPosition = Vector3.new(-123.742, 20.074, 251.402)
+        elseif selectedDevice == "Celular" then
+            teleportPosition = Vector3.new(-123.742, 20.074, 251.402)
+        elseif selectedDevice == "Caça Fantasmas" then
+            teleportPosition = Vector3.new(-320.216, 7.4, -112.32)
+        elseif selectedDevice == "Celular e Laptop" then
+            teleportPosition = Vector3.new(-123.742, 20.074, 251.402)
+        end
+
+        -- Teleporta o jogador para a nova posição
+        if teleportPosition then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(teleportPosition)
+        end
+
+        -- Define a velocidade para 0
+        player.Character.Humanoid.WalkSpeed = 0
+
+        -- Loop principal
+        while isLooping do
+            -- Verifica o dispositivo selecionado e executa o ClickDetector correspondente
+            if selectedDevice == "Laptop" then
+                fireclickdetector(workspace.WorkspaceCom["001_CommercialStores"].CommercialStorage1.Store.Tools.Laptop.ClickDetector)
+            elseif selectedDevice == "Celular" then
+                fireclickdetector(workspace.WorkspaceCom["001_CommercialStores"].CommercialStorage1.Store.Tools:GetChildren()[3].ClickDetector)
+            elseif selectedDevice == "Caça Fantasmas" then
+                fireclickdetector(workspace.WorkspaceCom["001_GiveTools"].GhostMeter.ClickDetector)
+            elseif selectedDevice == "Celular e Laptop" then
+                fireclickdetector(workspace.WorkspaceCom["001_CommercialStores"].CommercialStorage1.Store.Tools:GetChildren()[3].ClickDetector)
+                wait(0.1)
+                fireclickdetector(workspace.WorkspaceCom["001_CommercialStores"].CommercialStorage1.Store.Tools.Laptop.ClickDetector)
+            end
+            wait(0.01) -- Espera 0.01 segundo
+        end
+    end
+end
+
+-- Função para parar o loop e voltar à posição original
+local function stopLoop()
+    if isLooping then
+        isLooping = false -- Para o loop
+        wait(0.1) -- Espera um pouco antes de voltar
+
+        -- Teleporta de volta para a posição original
+        if originalPosition then
+            player.Character.HumanoidRootPart.CFrame = CFrame.new(originalPosition)
+        end
+
+        -- Restaura a velocidade para 16
+        player.Character.Humanoid.WalkSpeed = 16
+    end
+end
+
+-- Reinicializa as variáveis em caso de reset do personagem
+player.CharacterAdded:Connect(function()
+    isLooping = false -- Garante que o loop seja parado ao resetar
+    originalPosition = nil -- Reseta a posição original
+end)
+
+-- Botão para iniciar o loop
+Tab:AddButton({
+    Name = "Lagar Servidor",
+    Callback = function()
+        startLoop()
+    end
+})
+
+-- Botão para parar o loop
+Tab:AddButton({
+    Name = "Parar de Lagar",
+    Callback = function()
+        stopLoop()
+    end
+})
+
+Tab:AddParagraph("Atenção", "Caso seu Celular não Seja Muito Bom não é Recomendado que use o Lagar Servidor!")
