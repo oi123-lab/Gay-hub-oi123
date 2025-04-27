@@ -5,7 +5,7 @@ local Window = OrionLib:MakeWindow({
     SaveConfig = true, 
     ConfigFolder = "MatrixHubConfigs",
     IntroEnabled = true,
-    IntroText = "Team CARTOLA CENTER🎩",
+    IntroText = "Team Matrix COMMUNITY",
     IntroIcon = "rbxassetid://86898373680592",
     Icon = "rbxassetid://86898373680592",
     CloseCallback = function() 
@@ -2082,40 +2082,6 @@ Tab:AddButton({
 	Name = "DARK BLADE BLOXFRUITS!",
 	Callback = function()
  loadstring(game:HttpGet('https://pastebin.com/raw/6ctYevGX'))()
-      		print("button pressed")
-  	end    
-})
-
---[[
-Name = <string> - The name of the button.
-Callback = <function> - The function of the button.
-]]
-
-local Tab = Window:MakeTab({
-	Name = "PEGAR TRILHA",
-	Icon = "rbxassetid://138700382840270",
-	PremiumOnly = false
-})
-
---[[
-Name = <string> - The name of the tab.
-Icon = <string> - The icon of the tab.
-PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
-]]
-
-
-Tab:AddButton({
-	Name = "GET TRAIL",
-	Callback = function()
- local Player = game.Players.LocalPlayer
- local Character = Player.Character 
- local Humanoid = Character:FindFirstChildOfClass("Humanoid") 
- local RootPart = Character:FindFirstChild("HumanoidRootPart") local OldPos = RootPart.CFrame 
- 
- local function freezeHumanoid(humanoid) humanoid.WalkSpeed = 0 humanoid.JumpPower = 0 end local function restoreHumanoid(humanoid) 
- humanoid.WalkSpeed = 16 humanoid.JumpPower = 50 end 
- local firstPosition = CFrame.new(-349, 5, 98) 
- local PoolClick = workspace.WorkspaceCom["001_Hospital"]:FindFirstChild("PoolClick") if PoolClick and PoolClick:FindFirstChild("ClickDetector") then freezeHumanoid(Humanoid) RootPart.CFrame = firstPosition task.wait(1) RootPart.CFrame = PoolClick.CFrame fireclickdetector(PoolClick.ClickDetector) task.wait(2) RootPart.CFrame = OldPos restoreHumanoid(Humanoid) else warn("PoolClick ou ClickDetector não encontrado!")
       		print("button pressed")
   	end    
 })
