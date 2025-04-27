@@ -82,166 +82,309 @@ PremiumOnly = false
 
 })
 
+
+
+local Section = Tab:AddSection({
+	Name = "Boat Fling"
+})
+
+
 local Players = game:GetService("Players")
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
 
 local playerNames = {}
-
 for _, player in pairs(Players:GetPlayers()) do
-
-table.insert(playerNames, player.Name)
-
+    table.insert(playerNames, player.Name)
 end
 
 local selectedPlayerName = nil
 
 Tab:AddDropdown({
-
-Name = "jogadores!",
-
-Options = playerNames,
-
-Callback = function(selected)
-
-selectedPlayerName = selected
-
-end
-
+    Name = "Target",
+    Options = playerNames,
+    Callback = function(selected)
+        selectedPlayerName = selected
+    end
 })
 
+local function executeScript()
+    local UserInputService = game:GetService("UserInputService")
+    local Mouse = game.Players.LocalPlayer:GetMouse()
+    local Folder = Instance.new("Folder", Workspace)
+    local Part = Instance.new("Part", Folder)
+    local Attachment1 = Instance.new("Attachment", Part)
+    Part.Anchored = true
+    Part.CanCollide = false
+    Part.Transparency = 1
+
+    local NetworkAccess = coroutine.create(function()
+        settings().Physics.AllowSleep = false
+        while RunService.RenderStepped:Wait() do
+            for _, player in next, Players:GetPlayers() do
+                if player ~= Players.LocalPlayer then
+                    player.MaximumSimulationRadius = 0
+                    sethiddenproperty(player, "SimulationRadius", 0)
+                end
+            end
+            Players.LocalPlayer.MaximumSimulationRadius = math.pow(math.huge, math.huge)
+            setsimulationradius(math.huge)
+        end
+    end)
+    coroutine.resume(NetworkAccess)
+
+    local function ForceVehicle(v)
+        if v:IsA("Model") and v:FindFirstChildOfClass("VehicleSeat") then
+            Mouse.TargetFilter = v
+            for _, x in next, v:GetDescendants() do
+                if x:IsA("BodyAngularVelocity") or x:IsA("BodyForce") or x:IsA("BodyGyro") or x:IsA("BodyPosition") or x:IsA("BodyThrust") or x:IsA("BodyVelocity") or x:IsA("RocketPropulsion") then
+                    x:Destroy()
+                end
+            end
+            if v:FindFirstChild("Attachment") then
+                v:FindFirstChild("Attachment"):Destroy()
+            end
+            if v:FindFirstChild("AlignPosition") then
+                v:FindFirstChild("AlignPosition"):Destroy()
+            end
+            if v:FindFirstChild("Torque") then
+                v:FindFirstChild("Torque"):Destroy()
+            end
+            for _, part in next, v:GetDescendants() do
+                if part:IsA("BasePart") then
+                    part.CanCollide = false
+                    local Torque = Instance.new("Torque", part)
+                    Torque.Torque = Vector3.new(100000 * 12, 100000 * 12, 100000 * 12)
+                    local AlignPosition = Instance.new("AlignPosition", part)
+                    local Attachment2 = Instance.new("Attachment", part)
+                    Torque.Attachment0 = Attachment2
+                    AlignPosition.MaxForce = 999999
+                    AlignPosition.MaxVelocity = math.huge
+                    AlignPosition.Responsiveness = 200
+                    AlignPosition.Attachment0 = Attachment2
+                    AlignPosition.Attachment1 = Attachment1
+                end
+            end
+        end
+    end
+
+    for _, v in next, Workspace:GetDescendants() do
+        ForceVehicle(v)
+    end
+
+    Workspace.DescendantAdded:Connect(function(v)
+        ForceVehicle(v)
+    end)
+
+    spawn(function()
+        while true do
+            local voidPosition = Vector3.new(101, -446, -180)
+            Attachment1.WorldCFrame = CFrame.new(voidPosition)
+            RunService.RenderStepped:Wait()
+        end
+    end)
+end
+
+local function monitorSeats()
+    for _, seat in pairs(Workspace:GetDescendants()) do
+        if seat:IsA("Seat") or seat:IsA("VehicleSeat") then
+            seat:GetPropertyChangedSignal("Occupant"):Connect(function()
+                if seat.Occupant then
+                    local occupantPlayer = Players:GetPlayerFromCharacter(seat.Occupant.Parent)
+                    if occupantPlayer and occupantPlayer.Name == selectedPlayerName then
+                        executeScript()
+                    end
+                end
+            end)
+        end
+    end
+
+    Workspace.DescendantAdded:Connect(function(descendant)
+        if descendant:IsA("Seat") or descendant:IsA("VehicleSeat") then
+            descendant:GetPropertyChangedSignal("Occupant"):Connect(function()
+                if descendant.Occupant then
+                    local occupantPlayer = Players:GetPlayerFromCharacter(descendant.Occupant.Parent)
+                    if occupantPlayer and occupantPlayer.Name == selectedPlayerName then
+                        executeScript()
+                    end
+                end
+            end)
+        end
+    end)
+end
+
+monitorSeats()
 Tab:AddButton({
-
-Name = " fling boat🛳",
-
-Callback = function()
-
-if selectedPlayerName then
-
-local selectedPlayer = game.Players:FindFirstChild(selectedPlayerName)
-
-if selectedPlayer then
-
-local Player = game.Players.LocalPlayer
-
-local Character = Player.Character
-
-local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
-
-local RootPart = Character and Character:FindFirstChild("HumanoidRootPart")
-
-local Vehicles = game.Workspace:FindFirstChild("Vehicles")
-
-local OldPos = RootPart and RootPart.CFrame
-
-if RootPart and Vehicles then
-
-local PCar = Vehicles:FindFirstChild(Player.Name.."Car")
-
-if not PCar then
-
-RootPart.CFrame = CFrame.new(-3, -4, 2105)
-
-task.wait(0.5)
-
-game:GetService("ReplicatedStorage").RE["1Ca1r"]:FireServer("PickingBoat", "MilitaryBoatFree")
-
-task.wait(0.5)
-
-PCar = Vehicles:FindFirstChild(Player.Name.."Car")
-
-if PCar then
-
-local Seat = PCar:FindFirstChild("Body") and PCar.Body:FindFirstChild("VehicleSeat")
-
-if Seat then
-
-repeat
-
-task.wait()
-
-RootPart.CFrame = Seat.CFrame * CFrame.new(0, 2, 0)
-
-until Humanoid and Humanoid.Sit
-
-end
-
-end
-
-end
-
-local TargetC = selectedPlayer.Character
-
-local TargetH = TargetC and TargetC:FindFirstChildOfClass("Humanoid")
-
-local TargetRP = TargetC and TargetC:FindFirstChild("HumanoidRootPart")
-
-if PCar and TargetC and TargetH and TargetRP then
-
-if not TargetH.Sit then
-
-while not TargetH.Sit do
-
-task.wait()
-
-PCar:SetPrimaryPartCFrame(TargetRP.CFrame * CFrame.new(0, -2, 0))
-
-end
-
-task.wait(0.1)
-
-local AngularVelocity = Instance.new("BodyAngularVelocity")
-
-AngularVelocity.AngularVelocity = Vector3.new(70, 0, 0)
-
-AngularVelocity.MaxTorque = Vector3.new(math.huge, math.huge, math.huge)
-
-AngularVelocity.Parent = PCar.PrimaryPart
-
-task.wait(1)
-
-local launchDirection = Vector3.new(math.random(-1, 1), 1, math.random(-1, 1)).unit * 50
-
-local BodyVelocity = Instance.new("BodyVelocity")
-
-BodyVelocity.Velocity = launchDirection
-
-BodyVelocity.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-
-BodyVelocity.Parent = PCar.PrimaryPart
-
-task.wait(0.5)
-
-BodyVelocity:Destroy()
-
-AngularVelocity:Destroy()
-
-if Humanoid then Humanoid.Sit = false end
-
-task.wait(0.1)
-
-if RootPart then RootPart.CFrame = OldPos end
-
-end
-
-end
-
-end
-
-else
-
-print("tu tento pega um jogador que kitou ou que ta bugado")
-
-end
-
-else
-
-print("seleciona um jogador filho da puta animal")
-
-end
-
-end
-
+    Name = "Boat Fling",
+    Callback = function()
+        local Player = game.Players.LocalPlayer
+        local Character = Player.Character or Player.CharacterAdded:Wait()
+        local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+        local RootPart = Character:WaitForChild("HumanoidRootPart")
+        local Vehicles = game.Workspace:FindFirstChild("Vehicles")
+        local OldPos = RootPart.CFrame
+
+        if not Humanoid or not Vehicles then return end
+
+        local function GetCar()
+            return Vehicles:FindFirstChild(Player.Name.."Car")
+        end
+
+        local PCar = GetCar()
+
+        if not PCar then
+            RootPart.CFrame = CFrame.new(-2, 5, 2085)
+            task.wait(0.5)
+            local RemoteEvent = game:GetService("ReplicatedStorage"):FindFirstChild("RE")
+            if RemoteEvent and RemoteEvent:FindFirstChild("1Ca1r") then
+                RemoteEvent["1Ca1r"]:FireServer("PickingBoat", "MilitaryBoatFree")
+            end
+            task.wait(1)
+            PCar = GetCar()
+        end
+
+        if PCar then
+            local Seat = PCar:FindFirstChild("Body") and PCar.Body:FindFirstChild("VehicleSeat")
+            if Seat and not Humanoid.Sit then
+                repeat
+                    RootPart.CFrame = Seat.CFrame * CFrame.new(0, math.random(-1, 1), 0)
+                    task.wait()
+                until Humanoid.Sit or not PCar.Parent
+            end
+        end
+
+        wait(0.2)
+
+        local UserInputService = game:GetService("UserInputService")
+        local RunService = game:GetService("RunService")
+        local Mouse = Players.LocalPlayer:GetMouse()
+        local Folder = Instance.new("Folder", game:GetService("Workspace"))
+        local Part = Instance.new("Part", Folder)
+        local Attachment1 = Instance.new("Attachment", Part)
+        Part.Anchored = true
+        Part.CanCollide = false
+        Part.Transparency = 1
+
+        local NetworkAccess = coroutine.create(function()
+            settings().Physics.AllowSleep = false
+            while RunService.RenderStepped:Wait() do
+                for _, player in next, Players:GetPlayers() do
+                    if player ~= Players.LocalPlayer then
+                        player.MaximumSimulationRadius = 0
+                        sethiddenproperty(player, "SimulationRadius", 2)
+                    end
+                end
+                Players.LocalPlayer.MaximumSimulationRadius = math.pow(math.huge, math.huge)
+                setsimulationradius(math.huge)
+            end
+        end)
+        coroutine.resume(NetworkAccess)
+
+        local function ForceVehicle(v)
+            if v:IsA("Model") and v:FindFirstChildOfClass("VehicleSeat") then
+                Mouse.TargetFilter = v
+                for _, x in next, v:GetDescendants() do
+                    if x:IsA("BodyAngularVelocity") or x:IsA("BodyForce") or x:IsA("BodyGyro") or x:IsA("BodyPosition") or x:IsA("BodyThrust") or x:IsA("BodyVelocity") or x:IsA("RocketPropulsion") then
+                        x:Destroy()
+                    end
+                end
+                if v:FindFirstChild("Attachment") then
+                    v:FindFirstChild("Attachment"):Destroy()
+                end
+                if v:FindFirstChild("AlignPosition") then
+                    v:FindFirstChild("AlignPosition"):Destroy()
+                end
+                if v:FindFirstChild("Torque") then
+                    v:FindFirstChild("Torque"):Destroy()
+                end
+                for _, part in next, v:GetDescendants() do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                        local Torque = Instance.new("Torque", part)
+                        Torque.Torque = Vector3.new(1000 * 102, 100000 * 102, 10000 * 12)
+                        local AlignPosition = Instance.new("AlignPosition", part)
+                        local Attachment2 = Instance.new("Attachment", part)
+                        Torque.Attachment0 = Attachment2
+                        AlignPosition.MaxForce = 99999
+                        AlignPosition.MaxVelocity = math.huge
+                        AlignPosition.Responsiveness = 200
+                        AlignPosition.Attachment0 = Attachment2
+                        AlignPosition.Attachment1 = Attachment1
+                    end
+                end
+            end
+        end
+
+        for _, v in next, game:GetService("Workspace"):GetDescendants() do
+            ForceVehicle(v)
+        end
+
+        game:GetService("Workspace").DescendantAdded:Connect(function(v)
+            ForceVehicle(v)
+        end)
+
+        spawn(function()
+            while true do
+                if selectedPlayerName then
+                    local player = Players:FindFirstChild(selectedPlayerName)
+                    if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+                        local rootPart = player.Character.HumanoidRootPart
+                        Attachment1.WorldCFrame = rootPart.CFrame
+                    end
+                end
+                RunService.RenderStepped:Wait()
+            end
+        end)
+
+        wait(4)
+
+        local targetPosition = Vector3.new(101, -446, -180)
+        player.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+
+        -- Código adicionado para efeito do kill()
+        local function applyKillEffect(targetPlayer)
+            if targetPlayer and targetPlayer.Character then
+                local TargetRP = targetPlayer.Character:FindFirstChild("HumanoidRootPart")
+                local TargetH = targetPlayer.Character:FindFirstChildOfClass("Humanoid")
+                local Angles = 45
+
+                if TargetRP and TargetH then
+                    kill(TargetRP, CFrame.new(0, 3, 0) + TargetH.MoveDirection * TargetRP.Velocity.Magnitude / 1.05, CFrame.Angles(math.rad(Angles), 0, 0))
+                    kill(TargetRP, CFrame.new(0, -1.5, 2) + TargetH.MoveDirection * TargetRP.Velocity.Magnitude / 1.05, CFrame.Angles(math.rad(Angles), 0, 0))
+                    kill(TargetRP, CFrame.new(2, 1.5, 2.25)  + TargetH.MoveDirection * TargetRP.Velocity.Magnitude / 1.10, CFrame.Angles(math.rad(50), 0, 0))
+                    kill(TargetRP, CFrame.new(-2.25, -1.5, 2.25) + TargetH.MoveDirection * TargetRP.Velocity.Magnitude / 1.10, CFrame.Angles(math.rad(30), 0, 0))
+                    kill(TargetRP, CFrame.new(0, 1.5, 0) + TargetH.MoveDirection * TargetRP.Velocity.Magnitude / 1.05, CFrame.Angles(math.rad(Angles), 0, 0))
+                    kill(TargetRP, CFrame.new(0, -1.5, 0) + TargetH.MoveDirection * TargetRP.Velocity.Magnitude / 1.05, CFrame.Angles(math.rad(Angles), 0, 0))
+                end
+            end
+        end
+
+        local function onPlayerSeated(player)
+            if player and player.Character then
+                local humanoid = player.Character:FindFirstChild("Humanoid")
+                if humanoid and humanoid.SeatPart then
+                    if humanoid.SeatPart.Parent:IsA("VehicleSeat") then
+                        player.Character.HumanoidRootPart.CFrame = CFrame.new(targetPosition)
+                        applyKillEffect(player)
+                    end
+                end
+            end
+        end
+
+        game:GetService("Players").PlayerAdded:Connect(function(player)
+            if player.Name == selectedPlayerName then
+                player.CharacterAdded:Connect(function(character)
+                    local humanoid = character:WaitForChild("Humanoid")
+                    humanoid.Seated:Connect(function(_, seat)
+                        if seat then
+                            onPlayerSeated(player)
+                        end
+                    end)
+                end)
+            end
+        end)
+    end    
 })
-
 
 local Tab = Window:MakeTab({
 	Name = "Scripts universais",
@@ -597,4 +740,38 @@ game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(un
   	end    
 })
 
+
+
+local Tab = Window:MakeTab({
+	Name = "Jogador",
+	Icon = "rbxassetid://10734898355",
+	PremiumOnly = false
+})
+
+
+local Section = Tab:AddSection({
+	Name = "Anti functions"
+})
+
+
+Tab:AddToggle({
+    Name = "Ant Sit",
+    Default = false,
+    Callback = function(Value)
+        local player = game.Players.LocalPlayer
+        local humanoid = player.Character and player.Character.Humanoid
+        
+        if humanoid then
+            if Value then
+                -- Quando o toggle está ativado (Value é true), o humanoide não pode sentar em assentos
+                humanoid:SetStateEnabled("Seated", false)
+            else
+                -- Quando o toggle está desativado (Value é false), o humanoide pode sentar em assentos normalmente
+                humanoid:SetStateEnabled("Seated", true)
+            end
+        else
+            print("Erro: Personagem não encontrado.")
+        end
+    end    
+})
 
