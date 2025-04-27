@@ -76,7 +76,7 @@ PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 local Tab = Window:MakeTab({
 Name = "boat fling🛳",
 
-Icon = "rbxassetid://4483345998",
+Icon = "rbxassetid://10734934585",
 
 PremiumOnly = false
 
@@ -454,7 +454,7 @@ game:GetService("ReplicatedStorage").RE:FindFirstChild("1Too1l"):InvokeServer(un
 
 local Tab = Window:MakeTab({
 	Name = "Fling v16[OP]",
-	Icon = "rbxassetid://4483345998",
+	Icon = "rbxassetid://10734934585",
 	PremiumOnly = false
 })
 
