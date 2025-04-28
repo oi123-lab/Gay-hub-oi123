@@ -2066,6 +2066,8 @@ Tab:AddButton({
   	end    
 })
 
+
+
 local Tab = Window:MakeTab({
 	Name = "DARK BLADE",
 	Icon = "rbxassetid://4483345998",
@@ -2080,7 +2082,7 @@ PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 
 
 Tab:AddButton({
-	Name = "Button!",
+	Name = "DARK BLADE",
 	Callback = function()
   loadstring(game:HttpGet('https://pastebin.com/raw/6ctYevGX'))()
       		print("button pressed")
