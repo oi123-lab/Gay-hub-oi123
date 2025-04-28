@@ -2067,7 +2067,7 @@ Tab:AddButton({
 })
 
 local Tab = Window:MakeTab({
-	Name = "Items",
+	Name = "DARK BLADE",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -2078,10 +2078,11 @@ Icon = <string> - The icon of the tab.
 PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
+
 Tab:AddButton({
-	Name = "DARK BLADE BLOXFRUITS!",
+	Name = "Button!",
 	Callback = function()
- loadstring(game:HttpGet('https://pastebin.com/raw/6ctYevGX'))()
+  loadstring(game:HttpGet('https://pastebin.com/raw/6ctYevGX'))()
       		print("button pressed")
   	end    
 })
@@ -2089,5 +2090,4 @@ Tab:AddButton({
 --[[
 Name = <string> - The name of the button.
 Callback = <function> - The function of the button.
-
-
+]]
