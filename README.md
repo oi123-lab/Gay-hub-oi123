@@ -2126,3 +2126,30 @@ Callback = <function> - The function of the button.
 
 
 CoolParagraph:Set("AVISO: VOCE TEM QUE VOAR ATE A ILHA ELA E UM CUBO PRETO MAIS QUANDO VC ENTRAR NELA SE VAI VER UMA OBRA DE ARTE", "New Paragraph Content!")
+
+
+local Tab = Window:MakeTab({
+	Name = "Shaders",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+
+Tab:AddButton({
+	Name = "SHADERS V2",
+	Callback = function()
+ loadstring(game:HttpGet("https://pastebin.com/raw/Jv5TnvtM"))()
+      		print("button pressed")
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
