@@ -160,7 +160,7 @@ local function executeScript()
                     Torque.Attachment0 = Attachment2
                     AlignPosition.MaxForce = 999999999
                     AlignPosition.MaxVelocity = math.huge
-                    AlignPosition.Responsiveness = 9999999
+                    AlignPosition.Responsiveness = 200
                     AlignPosition.Attachment0 = Attachment2
                     AlignPosition.Attachment1 = Attachment1
                 end
@@ -307,7 +307,7 @@ Tab:AddButton({
                         Torque.Attachment0 = Attachment2
                         AlignPosition.MaxForce = 9999999999999999999999999999999999999999999998
                         AlignPosition.MaxVelocity = math.huge
-                        AlignPosition.Responsiveness = 999999999999
+                        AlignPosition.Responsiveness = 200
                         AlignPosition.Attachment0 = Attachment2
                         AlignPosition.Attachment1 = Attachment1
                     end
