@@ -79,6 +79,14 @@ Icon = <string> - The icon of the tab.
 PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
 ]]
 
+Tab:AddParagraph("Update Log 📄","<font color='rgb(66, 3, 255)'>Bugs De travamento Corrigido,melhor desempenho, funções Novas.</font>")
+
+local Section = Tab:AddSection({
+	Name = "Créditos"
+})
+
+Tab:AddParagraph("Créditos 📃","Créditos: <font color='rgb(66, 3, 255)'>Dev-Not Legitty owner-Mini PUMPKIN Members- Angola Da shopy Calebito39</font>")
+
 local Tab = Window:MakeTab({
 Name = "boat fling🛳",
 
