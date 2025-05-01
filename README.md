@@ -3609,3 +3609,84 @@ Tab:AddToggle({
     end
 })
 
+
+local Tab = Window:MakeTab({
+	Name = "Pull Player",
+	Icon = "rbxassetid://10734920149",
+	PremiumOnly = false
+})
+
+
+-- Variáveis para armazenar dados
+local fakeIP = ""
+local playerName = ""
+
+-- Gerador de Fake IP
+local function generateFakeIP()
+    fakeIP = playerName .. "'s IP: " .. math.random(0, 255) .. "." .. math.random(0, 255) .. "." .. math.random(0, 255) .. "." .. math.random(0, 255)
+    OrionLib:MakeNotification({
+        Name = "IP Capturado",
+        Content = fakeIP,
+        Image = "rbxassetid://4483345998",
+        Time = 5
+    })
+end
+
+-- Caixa de Texto para Inserir o Nome do Jogador
+Tab:AddTextbox({
+    Name = "Nome do Jogador",
+    Default = "",
+    TextDisappear = false,
+    Callback = function(Value)
+        if #Value <= 20 then
+            playerName = Value
+        else
+            OrionLib:MakeNotification({
+                Name = "Erro",
+                Content = "O nome não pode ter mais de 20 caracteres!",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    end
+})
+
+-- Botão para Gerar IP
+Tab:AddButton({
+    Name = "Gerar Ip",
+    Callback = function()
+        if playerName ~= "" then
+            generateFakeIP()
+        else
+            OrionLib:MakeNotification({
+                Name = "Erro",
+                Content = "Por favor, insira um nome de jogador.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    end
+})
+
+-- Botão para Copiar o IP
+Tab:AddButton({
+    Name = "Copiar IP",
+    Callback = function()
+        if fakeIP ~= "" then
+            setclipboard(fakeIP) -- Copia para a área de transferência
+            OrionLib:MakeNotification({
+                Name = "Copiado",
+                Content = "O IP foi copiado para a área de transferência.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        else
+            OrionLib:MakeNotification({
+                Name = "Erro",
+                Content = "Nenhum IP foi gerado ainda.",
+                Image = "rbxassetid://4483345998",
+                Time = 5
+            })
+        end
+    end
+})
