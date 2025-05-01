@@ -24,8 +24,8 @@ Toggle.Parent = ScreenGui
 Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BackgroundTransparency = 0.5
 Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
-Toggle.Size = UDim2.new(0, 50, 0, 50)
-Toggle.Image = "rbxassetid://122216401159246"
+Toggle.Size = UDim2.new(0, 60, 0, 60)
+Toggle.Image = "rbxassetid://133748801544296"
 Toggle.Draggable = true
 
 local Corner = Instance.new("UICorner")
