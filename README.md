@@ -59,6 +59,12 @@ Toggle.MouseButton1Click:Connect(function()
 end)
 
 
+local args = { [1] = "RolePlayName", [2] = "MATRIX COMMUNITY MEMBER🎩|ANTI TOXIC0S👾" }
+
+game:GetService("ReplicatedStorage"):WaitForChild("RE"):WaitForChild("1RPNam1eTex1t"):FireServer(unpack(args))
+
+
+
 local Tab = Window:MakeTab({
 	Name = "BEM VINDO",
 	Icon = "rbxassetid://10709751939",
