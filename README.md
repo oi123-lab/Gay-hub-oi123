@@ -85,7 +85,7 @@ local Section = Tab:AddSection({
 	Name = "Créditos"
 })
 
-Tab:AddParagraph("Créditos 📃","Créditos: <font color='rgb(66, 3, 255)'>Dev-Not Legitty owner-Mini PUMPKIN Members- Angola Da shopy Calebito39</font>")
+Tab:AddParagraph("Créditos 📃","Créditos: <font color='rgb(66, 3, 255)'>Dev-Not Legitty  Ajudante- Soy El torrada owner-Mini PUMPKIN Members- Angola Da shopy Calebito39</font>")
 
 local Tab = Window:MakeTab({
 Name = "boat fling🛳",
@@ -3799,104 +3799,3 @@ Tab:AddButton({
     end
 })
 
--- FunÃƒÂ§ÃƒÂ£o para teleportar para a ilha com efeito
-local function teleportWithEffect()
-    local character = player.Character or player.CharacterAdded:Wait()
-    local root = character:FindFirstChild("HumanoidRootPart") or character:WaitForChild("HumanoidRootPart", 3)
-
-    if not root then return end -- Impede erro caso o root nÃƒÂ£o seja encontrado
-
-    local PlayerGui = player:FindFirstChildOfClass("PlayerGui")
-
-    -- Criando a ScreenGui
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Parent = PlayerGui
-
-    -- Criando a ImageLabel
-    local ImageLabel = Instance.new("ImageLabel")
-    ImageLabel.Parent = ScreenGui
-    ImageLabel.Size = UDim2.new(0, 500, 0, 500)
-    ImageLabel.Position = UDim2.new(0.5, -250, 0.42, -250)
-    ImageLabel.Image = "rbxassetid://117307865668673"
-    ImageLabel.BackgroundTransparency = 1
-
-    -- Criando o Sound
-    local Sound = Instance.new("Sound")
-    Sound.Parent = PlayerGui
-    Sound.SoundId = "rbxassetid://1592708450"
-    Sound.Volume = 2
-    Sound:Play()
-
-    -- Efeito de rotaÃƒÂ§ÃƒÂ£o
-    local RotationSpeed = -5
-    local RotationConnection
-    RotationConnection = RunService.RenderStepped:Connect(function(deltaTime)
-        ImageLabel.Rotation = ImageLabel.Rotation + (RotationSpeed * (deltaTime * 60))
-    end)
-
-    -- Teleporta o jogador 2 segundos depois, enquanto a animaÃƒÂ§ÃƒÂ£o ocorre
-    task.spawn(function()
-        task.wait(2)
-        if root then
-            root.CFrame = CFrame.new(mapPosition + Vector3.new(0, 3, 0))
-        end
-    end)
-
-    -- Espera 3 segundos antes do efeito de desaparecimento
-    task.wait(3)
-
-    -- Efeito de diminuiÃƒÂ§ÃƒÂ£o atÃƒÂ© sumir
-    for i = 1, 30 do
-        ImageLabel.Size = ImageLabel.Size - UDim2.new(0, 15, 0, 15)
-        ImageLabel.Position = UDim2.new(0.5, -ImageLabel.Size.X.Offset / 2, 0.42, -ImageLabel.Size.Y.Offset / 2)
-        task.wait(0.05)
-    end
-
-    -- Remover tudo
-    RotationConnection:Disconnect()
-    ScreenGui:Destroy()
-    Sound:Destroy()
-end
-
--- OpÃƒÂ§ÃƒÂ£o para teleportar para a ilha
-Tab:AddButton({
-    Name = "Teleportar para ilha Sharingan",
-    Callback = function()
-        teleportWithEffect()
-    end
-})
-
-
--- FunÃƒÂ§ÃƒÂ£o para teleportar para a ilha com efeito
-local function teleportWithEffect()
-    local character = player.Character or player.CharacterAdded:Wait()
-    local root = character:FindFirstChild("HumanoidRootPart") or character:WaitForChild("HumanoidRootPart", 3)
-
-    if not root then return end -- Impede erro caso o root nÃƒÂ£o seja encontrado
-
-    local PlayerGui = player:FindFirstChildOfClass("PlayerGui")
-
-    -- Criando a ScreenGui
-    local ScreenGui = Instance.new("ScreenGui")
-    ScreenGui.Parent = PlayerGui
-
-    -- Criando a ImageLabel
-    local ImageLabel = Instance.new("ImageLabel")
-    ImageLabel.Parent = ScreenGui
-    ImageLabel.Size = UDim2.new(0, 500, 0, 500)
-    ImageLabel.Position = UDim2.new(0.5, -250, 0.42, -250)
-    ImageLabel.Image = "rbxassetid://110470606429328"
-    ImageLabel.BackgroundTransparency = 1
-
-    -- Criando o Sound
-    local Sound = Instance.new("Sound")
-    Sound.Parent = PlayerGui
-    Sound.SoundId = "rbxassetid://997057912"
-    Sound.Volume = 2
-    Sound:Play()
-
-    -- Efeito de rotaÃƒÂ§ÃƒÂ£o
-    local RotationSpeed = -5
-    local RotationConnection
-    RotationConnection = RunService.RenderStepped:Connect(function(deltaTime)
-        ImageLabel.Rotation = Image
