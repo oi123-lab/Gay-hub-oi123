@@ -3223,3 +3223,7 @@ Tab:AddButton({
     },
     [3] = "by:REDz"
 }
+
+game:GetService("ReplicatedStorage").RE:FindFirstChild("1Avata1rOrigina1l"):FireServer(unpack(args))
+  	end    
+})
