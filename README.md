@@ -3223,18 +3223,3 @@ Tab:AddButton({
     },
     [3] = "by:REDz"
 }
-
-local Tab = Window:MakeTab({
-	Name = "Créditos",
-	Icon = "rbxassetid://10734898355",
-	PremiumOnly = false
-})
-
-
-Tab:AddParagraph("Update Log 📄","<font color='rgb(66, 3, 255)'>Bugs De travamento Corrigido,melhor desempenho, funções Novas.</font>")
-
-local Section = Tab:AddSection({
-	Name = "Créditos"
-})
-
-Tab:AddParagraph("Créditos 📃","Créditos: <font color='rgb(66, 3, 255)'>Not Legitty</font>")
