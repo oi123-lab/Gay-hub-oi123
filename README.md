@@ -3227,3 +3227,130 @@ Tab:AddButton({
 game:GetService("ReplicatedStorage").RE:FindFirstChild("1Avata1rOrigina1l"):FireServer(unpack(args))
   	end    
 })
+
+
+local Tab = Window:MakeTab({
+	Name = "ENVIAR BEBE",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+
+local Section = Tab:AddSection({
+	Name = "Bebe que Segue Jogador"
+})
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local followToggle = false
+local originalCFrame
+
+-- Função para suavizar a movimentação até o jogador alvo
+local function smoothFollow(targetHumanoidRootPart)
+    local bodyPosition = Instance.new("BodyPosition")
+    bodyPosition.MaxForce = Vector3.new(1e6, 1e6, 1e6)
+    bodyPosition.P = 1e5
+    bodyPosition.D = 1e3
+    bodyPosition.Position = targetHumanoidRootPart.Position + Vector3.new(1, 0, 0) -- Gruda na lateral direita
+    bodyPosition.Parent = LocalPlayer.Character.HumanoidRootPart
+
+    task.wait(0.5) -- Aguarda até o personagem se alinhar
+
+    -- Após o alinhamento, cria o Weld
+    local weld = Instance.new("Weld")
+    weld.Part0 = LocalPlayer.Character.HumanoidRootPart
+    weld.Part1 = targetHumanoidRootPart
+    weld.C0 = CFrame.new(0.1, 0, 0) -- Ajusta a posição para grudar na lateral direita
+    weld.Parent = LocalPlayer.Character.HumanoidRootPart
+
+    bodyPosition:Destroy()
+end
+
+-- Função para conectar ao jogador e executar comandos
+local function connectToPlayer(playerName)
+    for _, player in pairs(Players:GetPlayers()) do
+        if string.find(player.Name:lower(), playerName:lower()) and player ~= LocalPlayer then
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                -- Salvar posição e orientação originais
+                originalCFrame = LocalPlayer.Character.HumanoidRootPart.CFrame
+
+                -- Suavizar movimentação até o alvo
+                smoothFollow(character.HumanoidRootPart)
+
+                -- Executar funções adicionais ao ativar
+                local args1 = { "CharacterFollowSpawnPlayer", "BabyBoy" }
+                ReplicatedStorage.RE:FindFirstChild("1Bab1yFollo1w"):FireServer(unpack(args1))
+
+                local args2 = { "CharacterSizeDown", 4 }
+                ReplicatedStorage.RE:FindFirstChild("1Clothe1s"):FireServer(unpack(args2))
+
+                return true
+            end
+        end
+    end
+    return false
+end
+
+-- Função para desconectar e voltar ao normal
+local function disconnect()
+    if originalCFrame then
+        -- Remover conexões (Welds) e voltar ao normal
+        for _, weld in pairs(LocalPlayer.Character.HumanoidRootPart:GetChildren()) do
+            if weld:IsA("Weld") then
+                weld:Destroy()
+            end
+        end
+
+        -- Voltar à posição original
+        LocalPlayer.Character.HumanoidRootPart.CFrame = originalCFrame
+
+        -- Executar funções adicionais ao desativar
+        local args1 = { "DeleteFollowCharacter" }
+        ReplicatedStorage.RE:FindFirstChild("1Bab1yFollo1w"):FireServer(unpack(args1))
+
+        local args2 = { "CharacterSizeUp", 1 }
+        ReplicatedStorage.RE:FindFirstChild("1Clothe1s"):FireServer(unpack(args2))
+
+        originalCFrame = nil
+    end
+end
+
+local playerName = ""
+
+Tab:AddTextbox({
+    Name = "Digite o Nome do Jogador",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(input)
+        playerName = input
+    end
+})
+
+Tab:AddToggle({
+    Name = "Ativar",
+    Default = false,
+    Callback = function(value)
+        followToggle = value
+
+        if followToggle then
+            if playerName ~= "" and connectToPlayer(playerName) then
+                -- Sucesso ao seguir o jogador
+            else
+                followToggle = false
+                -- Falha ao encontrar o jogador
+            end
+        else
+            disconnect()
+            -- Jogador desconectado
+        end
+    end
+})
