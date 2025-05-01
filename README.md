@@ -158,9 +158,9 @@ local function executeScript()
                     local AlignPosition = Instance.new("AlignPosition", part)
                     local Attachment2 = Instance.new("Attachment", part)
                     Torque.Attachment0 = Attachment2
-                    AlignPosition.MaxForce = 999999
+                    AlignPosition.MaxForce = 999999999
                     AlignPosition.MaxVelocity = math.huge
-                    AlignPosition.Responsiveness = 200
+                    AlignPosition.Responsiveness = 9999999
                     AlignPosition.Attachment0 = Attachment2
                     AlignPosition.Attachment1 = Attachment1
                 end
@@ -477,6 +477,7 @@ Tab:AddButton({
 Name = <string> - The name of the button.
 Callback = <function> - The function of the button.
 ]]
+
 
 
 local Tab = Window:MakeTab({
