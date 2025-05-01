@@ -5,11 +5,11 @@ local Window = OrionLib:MakeWindow({
     SaveConfig = true, 
     ConfigFolder = "MatrixHubConfigs",
     IntroEnabled = true,
-    IntroText = "Team Matrix COMMUNITY",
+    IntroText = "MATRIX HUB v3.1|Team Matrix COMMUNITY",
     IntroIcon = "rbxassetid://86898373680592",
     Icon = "rbxassetid://86898373680592",
     CloseCallback = function() 
-        print("MATRIX HUB V2 fechado")
+        print("MATRIX HUB V3.1 fechado")
     end
 })
 
@@ -25,7 +25,7 @@ Toggle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BackgroundTransparency = 0.5
 Toggle.Position = UDim2.new(0, 0, 0.454706937, 0)
 Toggle.Size = UDim2.new(0, 60, 0, 60)
-Toggle.Image = "rbxassetid://133748801544296"
+Toggle.Image = "rbxassetid://86898373680592"
 Toggle.Draggable = true
 
 local Corner = Instance.new("UICorner")
@@ -172,9 +172,9 @@ local function executeScript()
                     local AlignPosition = Instance.new("AlignPosition", part)
                     local Attachment2 = Instance.new("Attachment", part)
                     Torque.Attachment0 = Attachment2
-                    AlignPosition.MaxForce = 999999999
+                    AlignPosition.MaxForce = 999999999999999999999999999999999999999999999999
                     AlignPosition.MaxVelocity = math.huge
-                    AlignPosition.Responsiveness = 200
+                    AlignPosition.Responsiveness = 999999999999999999999999999999999
                     AlignPosition.Attachment0 = Attachment2
                     AlignPosition.Attachment1 = Attachment1
                 end
@@ -319,9 +319,9 @@ Tab:AddButton({
                         local AlignPosition = Instance.new("AlignPosition", part)
                         local Attachment2 = Instance.new("Attachment", part)
                         Torque.Attachment0 = Attachment2
-                        AlignPosition.MaxForce = 9999999999999999999999999999999999999999999998
+                        AlignPosition.MaxForce = 999999999999999999999999999999999999999999999999999999999
                         AlignPosition.MaxVelocity = math.huge
-                        AlignPosition.Responsiveness = 200
+                        AlignPosition.Responsiveness = 999999999999999999999999999999
                         AlignPosition.Attachment0 = Attachment2
                         AlignPosition.Attachment1 = Attachment1
                     end
