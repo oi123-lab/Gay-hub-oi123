@@ -1,6 +1,6 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Davizinhofprest/Jaoohub/refs/heads/main/Jaoohub/Orion.lua')))()
 local Window = OrionLib:MakeWindow({
-    Name = "MATRIX HUB V3.0 : By Matrix Community🎩",
+    Name = "MATRIX HUB V3.1 : By Matrix Community🎩",
     HidePremium = false, 
     SaveConfig = true, 
     ConfigFolder = "MatrixHubConfigs",
@@ -305,9 +305,9 @@ Tab:AddButton({
                         local AlignPosition = Instance.new("AlignPosition", part)
                         local Attachment2 = Instance.new("Attachment", part)
                         Torque.Attachment0 = Attachment2
-                        AlignPosition.MaxForce = 99999999999999999
+                        AlignPosition.MaxForce = 9999999999999999999999999999999999999999999998
                         AlignPosition.MaxVelocity = math.huge
-                        AlignPosition.Responsiveness = 200
+                        AlignPosition.Responsiveness = 999999999999
                         AlignPosition.Attachment0 = Attachment2
                         AlignPosition.Attachment1 = Attachment1
                     end
@@ -479,6 +479,259 @@ Callback = <function> - The function of the button.
 ]]
 
 
+local Tab = Window:MakeTab({
+	Name = "Fling V17",
+	Icon = "rbxassetid://82030382489670",
+	PremiumOnly = false
+})
+
+
+local Section = Tab:AddSection({
+	Name = "Fling"
+})
+
+local Targets = {""} -- Nome será preenchido pela TextBox
+local LoopAtivo = false
+
+-- TextBox para capturar o nome do jogador e armazenar em Targets[1]
+Tab:AddTextbox({
+    Name = "Digite o nome do Jogador",
+    Default = "",
+    TextDisappear = true,
+    Callback = function(Value)
+        Targets[1] = Value
+    end
+})
+
+-- Botão com a função completa no Callback e loop infinito usando RunService
+Tab:AddToggle({
+	Name = "Fling",
+	Default = false,
+	Callback = function(Value)
+		if Value then
+            -- Ativa o loop quando a toggle é ligada
+            LoopAtivo = true
+            task.spawn(function()
+                while LoopAtivo do
+                    local player = game.Players.LocalPlayer
+ local mouse = player:GetMouse()
+ local Targets = {Targets[1]}
+ 
+ local Players = game:GetService("Players")
+ local Player = Players.LocalPlayer
+ 
+ local AllBool = false
+ 
+ local GetPlayer = function(Name)
+	Name = Name:lower()
+	if Name == "all" or Name == "others" then
+		AllBool = true
+		return
+	elseif Name == "random" then
+		local GetPlayers = Players:GetPlayers()
+		if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+		return GetPlayers[math.random(#GetPlayers)]
+	elseif Name ~= "random" and Name ~= "all" and Name ~= "others" then
+		for _,x in next, Players:GetPlayers() do
+			if x ~= Player then
+				if x.Name:lower():match("^"..Name) then
+					return x;
+				elseif x.DisplayName:lower():match("^"..Name) then
+					return x;
+				end
+			end
+		end
+	else
+		return
+	end
+ end
+ 
+ local Message = function(_Title, _Text, Time)
+	print(_Title)
+	print(_Text)
+	print(Time)
+end
+
+local SkidFling = function(TargetPlayer)
+	local Character = Player.Character
+	local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
+	local RootPart = Humanoid and Humanoid.RootPart
+ 
+	local TCharacter = TargetPlayer.Character
+	local THumanoid
+	local TRootPart
+	local THead
+	local Accessory
+	local Handle
+ 
+	if TCharacter:FindFirstChildOfClass("Humanoid") then
+		THumanoid = TCharacter:FindFirstChildOfClass("Humanoid")
+	end
+	if THumanoid and THumanoid.RootPart then
+		TRootPart = THumanoid.RootPart
+	end
+	if TCharacter:FindFirstChild("Head") then
+		THead = TCharacter.Head
+	end
+	if TCharacter:FindFirstChildOfClass("Accessory") then
+		Accessory = TCharacter:FindFirstChildOfClass("Accessory")
+	end
+	if Accessoy and Accessory:FindFirstChild("Handle") then
+		Handle = Accessory.Handle
+	end
+ 
+	if Character and Humanoid and RootPart then
+		if RootPart.Velocity.Magnitude < 50 then
+			getgenv().OldPos = RootPart.CFrame
+		end
+		if THumanoid and THumanoid.Sit and not AllBool then
+		end
+		if THead then
+			workspace.CurrentCamera.CameraSubject = THead
+		elseif not THead and Handle then
+			workspace.CurrentCamera.CameraSubject = Handle
+		elseif THumanoid and TRootPart then
+			workspace.CurrentCamera.CameraSubject = THumanoid
+		end
+		if not TCharacter:FindFirstChildWhichIsA("BasePart") then
+			return
+		end
+		
+		local FPos = function(BasePart, Pos, Ang)
+			RootPart.CFrame = CFrame.new(BasePart.Position) * Pos * Ang
+			Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position) * Pos * Ang)
+			RootPart.Velocity = Vector3.new(9e7, 9e7 * 10, 9e7)
+			RootPart.RotVelocity = Vector3.new(9e8, 9e8, 9e8)
+		end
+		
+		local SFBasePart = function(BasePart)
+			local TimeToWait = 2
+			local Time = tick()
+			local Angle = 0
+ 
+			repeat
+				if RootPart and THumanoid then
+					if BasePart.Velocity.Magnitude < 50 then
+						Angle = Angle + 100
+ 
+						FPos(BasePart, CFrame.new(0, 1.5, 0) + THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25, CFrame.Angles(math.rad(Angle),0 ,0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, -1.5, 0) + THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25, CFrame.Angles(math.rad(Angle), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(2.25, 1.5, -2.25) + THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25, CFrame.Angles(math.rad(Angle), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(-2.25, -1.5, 2.25) + THumanoid.MoveDirection * BasePart.Velocity.Magnitude / 1.25, CFrame.Angles(math.rad(Angle), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, 1.5, 0) + THumanoid.MoveDirection,CFrame.Angles(math.rad(Angle), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, -1.5, 0) + THumanoid.MoveDirection,CFrame.Angles(math.rad(Angle), 0, 0))
+						task.wait()
+					else
+						FPos(BasePart, CFrame.new(0, 1.5, THumanoid.WalkSpeed), CFrame.Angles(math.rad(90), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, -1.5, -THumanoid.WalkSpeed), CFrame.Angles(0, 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, 1.5, THumanoid.WalkSpeed), CFrame.Angles(math.rad(90), 0, 0))
+						task.wait()
+						
+						FPos(BasePart, CFrame.new(0, 1.5, TRootPart.Velocity.Magnitude / 1.25), CFrame.Angles(math.rad(90), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, -1.5, -TRootPart.Velocity.Magnitude / 1.25), CFrame.Angles(0, 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, 1.5, TRootPart.Velocity.Magnitude / 1.25), CFrame.Angles(math.rad(90), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, -1.5, 0), CFrame.Angles(math.rad(90), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, -1.5, 0), CFrame.Angles(0, 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, -1.5 ,0), CFrame.Angles(math.rad(-90), 0, 0))
+						task.wait()
+ 
+						FPos(BasePart, CFrame.new(0, -1.5, 0), CFrame.Angles(0, 0, 0))
+						task.wait()
+					end
+				else
+					break
+				end
+			until BasePart.Velocity.Magnitude > 500 or BasePart.Parent ~= TargetPlayer.Character or TargetPlayer.Parent ~= Players or not TargetPlayer.Character == TCharacter or THumanoid.Sit or Humanoid.Health <= 0 or tick() > Time + TimeToWait
+		end
+		
+		workspace.FallenPartsDestroyHeight = 0/0
+		
+		local BV = Instance.new("BodyVelocity")
+		BV.Name = "EpixVel"
+		BV.Parent = RootPart
+		BV.Velocity = Vector3.new(9e8, 9e8, 9e8)
+		BV.MaxForce = Vector3.new(1/0, 1/0, 1/0)
+		
+		Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, false)
+		
+		if TRootPart and THead then
+			if (TRootPart.CFrame.p - THead.CFrame.p).Magnitude > 5 then
+				SFBasePart(THead)
+			else
+				SFBasePart(TRootPart)
+			end
+		elseif TRootPart and not THead then
+			SFBasePart(TRootPart)
+		elseif not TRootPart and THead then
+			SFBasePart(THead)
+		elseif not TRootPart and not THead and Accessory and Handle then
+			SFBasePart(Handle)
+		else
+		end
+		
+		BV:Destroy()
+		Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated, true)
+		workspace.CurrentCamera.CameraSubject = Humanoid
+	
+		workspace.FallenPartsDestroyHeight = getgenv().FPDH
+	else
+	end
+ end
+ 
+ getgenv().Welcome = true
+ if Targets[1] then for _,x in next, Targets do GetPlayer(x) end else return end
+ 
+ if AllBool then
+	for _,x in next, Players:GetPlayers() do
+		SkidFling(x)
+	end
+ end
+ 
+ for _,x in next, Targets do
+	if GetPlayer(x) and GetPlayer(x) ~= Player then
+		if GetPlayer(x).UserId ~= 1414978355 then
+			local TPlayer = GetPlayer(x)
+			if TPlayer then
+				SkidFling(TPlayer)
+			end
+		else
+		end
+	elseif not GetPlayer(x) and not AllBool then
+	end
+ end
+                    task.wait(0.1)
+                end
+            end)
+        else
+            -- Desativa o loop quando a toggle é desligada
+            LoopAtivo = false
+        end
+	end    
+})
 
 local Tab = Window:MakeTab({
 	Name = "SOUND ALL🚨",
@@ -3354,3 +3607,186 @@ Tab:AddToggle({
         end
     end
 })
+
+
+local Tab = Window:MakeTab({
+	Name = "ESP BY NOT LEGITTY",
+	Icon = "rbxassetid://101885100425607",
+	PremiumOnly = false
+})
+
+
+local Section = Tab:AddSection({
+	Name = "ESP"
+})
+
+local espEnabled = false -- Variável para rastrear o estado do ESP
+local playerConnections = {} -- Tabela para rastrear conexões dos jogadores
+
+-- Função para criar o ESP
+local function createESP(player)
+    if player == game.Players.LocalPlayer then return end -- Ignorar o jogador local
+
+    local function setupESP(character)
+        if not character:FindFirstChild("Head") then
+            character:WaitForChild("Head") -- Garante que a cabeça exista
+        end
+        if not character:FindFirstChildOfClass("Humanoid") then
+            character:WaitForChild("Humanoid") -- Garante que o humanoide exista
+        end
+
+        -- Criando o Highlight
+        local highlight = Instance.new("Highlight")
+        highlight.Name = "ESP_Highlight"
+        highlight.FillColor = Color3.new(1, 1, 1) -- Branco
+        highlight.FillTransparency = 0.5 -- Transparência no contorno
+        highlight.OutlineTransparency = 0 -- Contorno sólido
+        highlight.Parent = character
+
+        -- Tornando o jogador branco transparente
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA("BasePart") and part.Transparency < 1 then
+                part:SetAttribute("OriginalTransparency", part.Transparency) -- Salva a transparência original
+                part.Transparency = 0.5 -- Define transparência para 50%
+                part.Color = Color3.new(1, 1, 1) -- Deixa a cor branca
+            end
+        end
+
+        -- Criando o BillboardGui
+        local billboardGui = Instance.new("BillboardGui")
+        billboardGui.Name = "ESP_Info"
+        billboardGui.Size = UDim2.new(0, 150, 0, 30)
+        billboardGui.StudsOffset = Vector3.new(0, 3, 0)
+        billboardGui.Adornee = character:FindFirstChild("Head")
+        billboardGui.AlwaysOnTop = true
+        billboardGui.Parent = character
+
+        -- Criando o Texto
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.new(1, 1, 1)
+        textLabel.TextStrokeTransparency = 1 -- Remover o contorno preto
+        textLabel.TextScaled = true
+        textLabel.Font = Enum.Font.SourceSans -- Fonte alterada para SourceSans
+        textLabel.Parent = billboardGui
+
+        -- Atualizar as informações imediatamente
+        local function updateInfo()
+            if character and character:FindFirstChild("Humanoid") and character.PrimaryPart then
+                local humanoid = character:FindFirstChildOfClass("Humanoid")
+                local distance = math.floor((character.PrimaryPart.Position - game.Players.LocalPlayer.Character.PrimaryPart.Position).Magnitude)
+                textLabel.Text = string.format("%s | Vida: %d | Distância: %d", player.Name, math.floor(humanoid.Health), distance)
+            end
+        end
+
+        -- Atualizar as informações em loop
+        task.spawn(function()
+            while espEnabled and character and character:FindFirstChild("Humanoid") do
+                updateInfo()
+                task.wait(1)
+            end
+        end)
+
+        -- Atualizar imediatamente ao criar
+        updateInfo()
+    end
+
+    if player.Character then
+        setupESP(player.Character)
+    end
+
+    player.CharacterAdded:Connect(function(character)
+        if espEnabled then
+            setupESP(character)
+        end
+    end)
+end
+
+-- Função para remover o ESP de um jogador
+local function removeESP(player)
+    if player.Character then
+        -- Remover Highlight
+        if player.Character:FindFirstChild("ESP_Highlight") then
+            player.Character.ESP_Highlight:Destroy()
+        end
+        -- Remover BillboardGui
+        if player.Character:FindFirstChild("ESP_Info") then
+            player.Character.ESP_Info:Destroy()
+        end
+        -- Restaurar transparência original
+        for _, part in pairs(player.Character:GetDescendants()) do
+            if part:IsA("BasePart") and part:GetAttribute("OriginalTransparency") then
+                part.Transparency = part:GetAttribute("OriginalTransparency") -- Restaurar transparência
+                part:SetAttribute("OriginalTransparency", nil) -- Remover atributo
+            end
+        end
+    end
+end
+
+-- Função para ativar o ESP
+local function enableESP()
+    espEnabled = true
+    for _, player in pairs(game.Players:GetPlayers()) do
+        -- Criar ESP imediatamente quando o jogador já está no jogo
+        if player.Character then
+            createESP(player)
+        end
+        -- Conexão para futuros personagens do jogador
+        playerConnections[player] = player.CharacterAdded:Connect(function(character)
+            if espEnabled then
+                createESP(player)
+            end
+        end)
+    end
+
+    -- Conexão para novos jogadores
+    playerConnections["PlayerAdded"] = game.Players.PlayerAdded:Connect(function(player)
+        if espEnabled then
+            -- Criar ESP imediatamente para novos jogadores
+            if player.Character then
+                createESP(player)
+            end
+            -- Conectar ao evento CharacterAdded
+            playerConnections[player] = player.CharacterAdded:Connect(function(character)
+                createESP(player)
+            end)
+        end
+    end)
+end
+
+-- Função para desativar o ESP
+local function disableESP()
+    espEnabled = false
+    for _, player in pairs(game.Players:GetPlayers()) do
+        removeESP(player)
+        -- Desconectar eventos associados ao jogador
+        if playerConnections[player] then
+            playerConnections[player]:Disconnect()
+            playerConnections[player] = nil
+        end
+    end
+
+    -- Desconectar o evento de novos jogadores
+    if playerConnections["PlayerAdded"] then
+        playerConnections["PlayerAdded"]:Disconnect()
+        playerConnections["PlayerAdded"] = nil
+    end
+end
+
+-- Toggle para ativar/desativar o ESP
+Tab:AddToggle({
+    Name = "ESP",
+    Default = false,
+    Callback = function(state)
+        if state then
+            enableESP()
+        else
+            disableESP()
+        end
+    end
+})
+print("button pressed")
+  	end    
+})
+
