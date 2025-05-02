@@ -9,7 +9,7 @@ local whitelistedUsers = {
 local player = game:GetService("Players").LocalPlayer
 
 if not whitelistedUsers[player.Name] then
-    player:Kick("you no have a permission to use this script")
+    player:Kick("SUA CONTA FOI BANIDA POR 402897 SEMANAS")
     return
 end
 
