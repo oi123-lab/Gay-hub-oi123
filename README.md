@@ -1,20 +1,3 @@
-local whitelistedUsers = {
-    ["bloodaideea5"] = true,
-    ["vacalebrenj"] = true,
-    ["combine192929"] = true,
-    ["FELIPE21730"] = true,
-    ["malcolmvasco2012"] = true,
-}
-
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-
-if not whitelistedUsers[LocalPlayer.Name] then
-    LocalPlayer:Kick("SUA CONTA FOI HACKEAD E VAZADA")
-    return
-end
-
-
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Davizinhofprest/Jaoohub/refs/heads/main/Jaoohub/Orion.lua')))()
 local Window = OrionLib:MakeWindow({
     Name = "MATRIX HUB V3.1 : By Matrix Community🎩",
