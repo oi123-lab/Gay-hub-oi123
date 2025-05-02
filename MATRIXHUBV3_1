@@ -1,0 +1,17 @@
+local whitelistedUsers = {
+    ["bloodaideea5"] = true,
+    ["vacalebrenj"] = true,
+    ["combine192929"] = true,
+    ["FELIPE21730"] = true,
+    ["malcolmvasco2012"] = true,
+}
+
+game.Players.PlayerAdded:Connect(function(player)
+    if not whitelistedUsers[player.Name] then
+        player:Kick("you no have a permission to use this script")
+        return
+    end
+
+    -- o loadstring do script
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/oi123-lab/Gay-hub-oi123/refs/heads/main/hub.txt"))()
+end)
