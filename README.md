@@ -3799,3 +3799,90 @@ Tab:AddButton({
     end
 })
 
+
+local Tab = Window:MakeTab({
+	Name = "ESP TEST",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+--[[
+Name = <string> - The name of the tab.
+Icon = <string> - The icon of the tab.
+PremiumOnly = <bool> - Makes the tab accessible to Sirus Premium users only.
+]]
+
+
+Tab:AddButton({
+	Name = "ESP BOX",
+	Callback = function()
+ local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+local LocalPlayer = Players.LocalPlayer
+
+local function createBox()
+    local box = Drawing.new("Square")
+    box.Thickness = 1
+    box.Transparency = 1
+    box.Color = Color3.fromRGB(255, 255, 255)
+    box.Filled = false
+    box.Visible = false
+    return box
+end
+
+local espBoxes = {}
+
+local function updateBox(player)
+    if player == LocalPlayer then return end
+
+    local character = player.Character
+    if not character then return end
+
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+
+    local box = espBoxes[player] or createBox()
+    espBoxes[player] = box
+
+    local rootPos, onScreen = Camera:WorldToViewportPoint(humanoidRootPart.Position)
+    if onScreen then
+        local distance = (Camera.CFrame.Position - humanoidRootPart.Position).Magnitude
+        local boxSize = Vector2.new(2000 / distance, 3000 / distance) -- Adjust size based on distance
+        local boxPosition = Vector2.new(rootPos.X - boxSize.X / 2, rootPos.Y - boxSize.Y / 2)
+
+        box.Size = boxSize
+        box.Position = boxPosition
+        box.Visible = true
+    else
+        box.Visible = false
+    end
+end
+
+local function removeBox(player)
+    if espBoxes[player] then
+        espBoxes[player]:Remove()
+        espBoxes[player] = nil
+    end
+end
+
+RunService.RenderStepped:Connect(function()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            updateBox(player)
+        end
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    removeBox(player)
+end)
+      		print("button pressed")
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
