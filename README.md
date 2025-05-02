@@ -1,4 +1,3 @@
-tipo assim  
 local whitelistedUsers = {
     ["bloodaideea5"] = true,
     ["vacalebrenj"] = true,
