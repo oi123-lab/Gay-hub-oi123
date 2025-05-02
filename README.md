@@ -1,3 +1,21 @@
+tipo assim  
+local whitelistedUsers = {
+    ["bloodaideea5"] = true,
+    ["vacalebrenj"] = true,
+    ["combine192929"] = true,
+    ["FELIPE21730"] = true,
+    ["malcolmvasco2012"] = true,
+}
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+if not whitelistedUsers[LocalPlayer.Name] then
+    LocalPlayer:Kick("SUA CONTA FOI HACKEAD E VAZADA")
+    return
+end
+
+
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Davizinhofprest/Jaoohub/refs/heads/main/Jaoohub/Orion.lua')))()
 local Window = OrionLib:MakeWindow({
     Name = "MATRIX HUB V3.1 : By Matrix Community🎩",
@@ -2429,7 +2447,7 @@ Tab:AddButton({
   	end    
 })
 
-
+Tab:AddButton({ Name = "Fling Bus - All", Callback = function() local Player = game.Players.LocalPlayer local Character = Player.Character local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid") local RootPart = Character and Character:FindFirstChild("HumanoidRootPart") local Vehicles = game.Workspace:FindFirstChild("Vehicles") if not Humanoid or not RootPart then warn("Jogador sem Humanoid/RootPart") return end -- FunÃ§Ã£o para spawnar o barco local function spawnBoat() RootPart.CFrame = CFrame.new(1118.81, 75.998, -1138.61) task.wait(0.5) game:GetService("ReplicatedStorage").RE:FindFirstChild("1Ca1r"):FireServer("PickingCar", "SchoolBus") task.wait(1) return Vehicles:FindFirstChild(Player.Name.."Car") end -- Garante que o barco foi spawnado local PCar = Vehicles:FindFirstChild(Player.Name.."Car") or spawnBoat() if not PCar then warn("Falha ao spawnar o barco") return end -- Aguarda o assento do barco local Seat = PCar:FindFirstChild("Body") and PCar.Body:FindFirstChild("VehicleSeat") if not Seat then warn("Nenhum assento encontrado no barco") return end -- Tenta sentar no barco repeat task.wait() RootPart.CFrame = Seat.CFrame * CFrame.new(0, math.random(-1, 1), 0) until Humanoid.Sit -- Criando e adicionando o SpinGyro no barco local SpinGyro = Instance.new("BodyGyro") SpinGyro.Parent = PCar.PrimaryPart SpinGyro.MaxTorque = Vector3.new(1e12, 1e12, 1e12) -- Torque maior para maior rotaÃ§Ã£o SpinGyro.P = 1e12 -- PotÃªncia aumentada para rotaÃ§Ã£o mais rÃ¡pida SpinGyro.CFrame = PCar.PrimaryPart.CFrame print("SpinGyro ativado no barco! RotaÃ§Ã£o centrÃ­fuga aplicada!") -- FunÃ§Ã£o para realizar o fling em um alvo especÃ­fico local function flingTarget(TargetPlayer) local TargetC = TargetPlayer.Character local TargetH = TargetC and TargetC:FindFirstChildOfClass("Humanoid") local TargetRP = TargetC and TargetC:FindFirstChild("HumanoidRootPart") if not TargetRP or not TargetH then warn("Alvo sem Humanoid/RootPart") return end local angle = 0 local radius = 5 local speed = 0.1 local expansionRate = 0.2 -- Loop de 3 segundos para o fling no jogador atual local startTime = tick() while tick() - startTime < 3 and PCar and PCar.Parent do task.wait(0.1) local offsetX = math.cos(angle) * radius local offsetZ = math.sin(angle) * radius local moveTo = TargetRP.Position + Vector3.new(offsetX, 0, offsetZ) PCar:SetPrimaryPartCFrame(CFrame.new(moveTo) * CFrame.Angles(0, math.rad(180), 0)) angle = angle + speed radius = math.max(radius - expansionRate, 1) if (PCar.PrimaryPart.Position - TargetRP.Position).Magnitude < 3 then speed = speed + 0.2 expansionRate = expansionRate + 0.1 end end end -- Loop para alternar entre os jogadores task.spawn(function() while PCar and PCar.Parent do for _, TargetPlayer in pairs(game.Players:GetPlayers()) do if TargetPlayer ~= Player and not Whitelist[TargetPlayer.Name] then flingTarget(TargetPlayer) end end end end) end 
 
 local Tab = Window:MakeTab({
 	Name = "DARK BLADE",
