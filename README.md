@@ -1,3 +1,30 @@
+-- Whitelist no início do Hub
+local whitelist = {
+    "bloodaideea5",
+    "vacalebrenj",
+    "combine192929",
+    "FELIPE21730",
+    "malcolmvasco2012"
+}
+
+local function isPlayerInWhitelist(playerName)
+    for _, name in ipairs(whitelist) do
+        if name == playerName then
+            return true
+        end
+    end
+    return false
+end
+
+local player = game.Players.LocalPlayer
+
+if not isPlayerInWhitelist(player.Name) then
+    player:Kick("Você não tem permissão para usar esse script.")
+    return
+end
+
+print("Acesso autorizado para " .. player.Name)
+
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Davizinhofprest/Jaoohub/refs/heads/main/Jaoohub/Orion.lua')))()
 local Window = OrionLib:MakeWindow({
     Name = "MATRIX HUB V3.1 : By Matrix Community🎩",
