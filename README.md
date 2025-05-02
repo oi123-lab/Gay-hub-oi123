@@ -3886,3 +3886,217 @@ end)
 Name = <string> - The name of the button.
 Callback = <function> - The function of the button.
 ]]
+
+
+Tab:AddButton({
+	Name = "ESP LINHA!",
+	Callback = function()
+ local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+local LocalPlayer = Players.LocalPlayer
+
+local function createTracer()
+    local tracer = Drawing.new("Line")
+    tracer.Thickness = 1
+    tracer.Transparency = 1
+    tracer.Color = Color3.fromRGB(255, 255, 255)
+    tracer.Visible = false
+    return tracer
+end
+
+local tracers = {}
+
+local function updateTracer(player)
+    if player == LocalPlayer then return end
+
+    local character = player.Character
+    if not character then return end
+
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+
+    local tracer = tracers[player] or createTracer()
+    tracers[player] = tracer
+
+    local rootPos, onScreen = Camera:WorldToViewportPoint(humanoidRootPart.Position)
+    if onScreen then
+        tracer.From = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y) -- Bottom center of the screen
+        tracer.To = Vector2.new(rootPos.X, rootPos.Y) 
+        tracer.Visible = true
+    else
+        tracer.Visible = false
+    end
+end
+
+local function removeTracer(player)
+    if tracers[player] then
+        tracers[player]:Remove()
+        tracers[player] = nil
+    end
+end
+
+RunService.RenderStepped:Connect(function()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            updateTracer(player)
+        end
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    removeTracer(player)
+end)
+      		print("button pressed")
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+Tab:AddButton({
+	Name = "ESP NOME PRINCIPAL",
+	Callback = function()
+ local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+local LocalPlayer = Players.LocalPlayer
+
+local function createUsernameTag()
+    local usernameTag = Drawing.new("Text")
+    usernameTag.Size = 18
+    usernameTag.Center = true
+    usernameTag.Outline = true
+    usernameTag.Color = Color3.fromRGB(255, 255, 255)
+    usernameTag.OutlineColor = Color3.fromRGB(0, 0, 0)
+    usernameTag.Visible = false
+    return usernameTag
+end
+
+local usernameTags = {}
+
+local function updateUsernameTag(player)
+    if player == LocalPlayer then return end
+
+    local character = player.Character
+    if not character then return end
+
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+
+    local usernameTag = usernameTags[player] or createUsernameTag()
+    usernameTags[player] = usernameTag
+
+    local rootPos, onScreen = Camera:WorldToViewportPoint(humanoidRootPart.Position)
+    if onScreen then
+        usernameTag.Text = player.Name
+        usernameTag.Position = Vector2.new(rootPos.X, rootPos.Y - 25) 
+        usernameTag.Visible = true
+    else
+        usernameTag.Visible = false
+    end
+end
+
+local function removeUsernameTag(player)
+    if usernameTags[player] then
+        usernameTags[player]:Remove()
+        usernameTags[player] = nil
+    end
+end
+
+RunService.RenderStepped:Connect(function()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            updateUsernameTag(player)
+        end
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    removeUsernameTag(player)
+end)
+      		print("button pressed")
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
+
+
+Tab:AddButton({
+	Name = "ESP NOME DE EXIBIÇÃO!",
+	Callback = function()
+ local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+local LocalPlayer = Players.LocalPlayer
+
+local function createNameTag()
+    local nameTag = Drawing.new("Text")
+    nameTag.Size = 18
+    nameTag.Center = true
+    nameTag.Outline = true
+    nameTag.Color = Color3.fromRGB(255, 255, 255)
+    nameTag.OutlineColor = Color3.fromRGB(0, 0, 0)
+    nameTag.Visible = false
+    return nameTag
+end
+
+local nameTags = {}
+
+local function updateNameTag(player)
+    if player == LocalPlayer then return end
+
+    local character = player.Character
+    if not character then return end
+
+    local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+    if not humanoidRootPart then return end
+
+    local nameTag = nameTags[player] or createNameTag()
+    nameTags[player] = nameTag
+
+    local rootPos, onScreen = Camera:WorldToViewportPoint(humanoidRootPart.Position)
+    if onScreen then
+        nameTag.Text = player.DisplayName
+        nameTag.Position = Vector2.new(rootPos.X, rootPos.Y - 40) 
+        nameTag.Visible = true
+    else
+        nameTag.Visible = false
+    end
+end
+
+local function removeNameTag(player)
+    if nameTags[player] then
+        nameTags[player]:Remove()
+        nameTags[player] = nil
+    end
+end
+
+RunService.RenderStepped:Connect(function()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player ~= LocalPlayer then
+            updateNameTag(player)
+        end
+    end
+end)
+
+Players.PlayerRemoving:Connect(function(player)
+    removeNameTag(player)
+end)
+      		print("button pressed")
+  	end    
+})
+
+--[[
+Name = <string> - The name of the button.
+Callback = <function> - The function of the button.
+]]
