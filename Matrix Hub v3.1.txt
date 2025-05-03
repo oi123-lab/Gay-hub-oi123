@@ -1,6 +1,6 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Davizinhofprest/Jaoohub/refs/heads/main/Jaoohub/Orion.lua')))()
 local Window = OrionLib:MakeWindow({
-    Name = "MATRIX HUB V3.1 : By Matrix Community🎩",
+    Name = "MATRIX HUB V4.0 : By Matrix Community🎩",
     HidePremium = false, 
     SaveConfig = true, 
     ConfigFolder = "MatrixHubConfigs",
