@@ -260,7 +260,9 @@ local SkidFling = function(TargetPlayer)
             end)
         else
             -- Desativa o loop quando a toggle é desligada
-            LoopAtivo = false        ("Toggle changed:", Options.MyToggle.Value)
+            LoopAtivo = false 
+        end
+("Toggle changed:", Options.MyToggle.Value)
     end)
 
     Options.MyToggle:SetValue(false)
