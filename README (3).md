@@ -6,15 +6,15 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/DeterDsl/Spacey-xploi
 
 MakeWindow({
   Hub = {
-    Title = "SHNMAXHUB | BROOKHAVEN RP",
-    Animation = "By : Shelby"
+    Title = "MATRIX HUBðŸŽ©| v0.1 | BROOKHAVEN RP",
+    Animation = "By : Matrix Community"
   },
     Key = {
-    KeySystem = false,
+    KeySystem = true,
     Title = "Key System",
     Description = "Wolfpaq",
     KeyLink = "Wolfpaq",
-    Keys = {"Wolfpaq"},
+    Keys = {"adm"},
     Notifi = {
       Notifications = true,
       CorrectKey = "Running the Script...",
@@ -25,7 +25,7 @@ MakeWindow({
 })
 
 MinimizeButton({
-  Image = "rbxassetid://17802167990",
+  Image = "rbxassetid://133748801544296",
   Size = {42, 42},
   Color = Color3.fromRGB(0, 0, 0),
   Corner = true,
