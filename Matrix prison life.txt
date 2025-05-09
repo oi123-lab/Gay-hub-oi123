@@ -1,0 +1,374 @@
+--[[
+  Prison Life FE Bypass Hub
+  Estilo: Open UTG
+  Feito com Fluent Library
+  By: [Not legitty]
+--]]
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UserInputService = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local Player = Players.LocalPlayer
+local Character = Player.Character or Player.CharacterAdded:Wait()
+local Humanoid = Character:WaitForChild("Humanoid")
+
+-- Carregar Fluent Library
+local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
+local SaveManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/addons/SaveManager.lua"))()
+local InterfaceManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/dawid-scripts/Fluent/master/addons/InterfaceManager.lua"))()
+
+-- Criar a janela principal
+local Window = Fluent:CreateWindow({
+    Title = "MATRIX HUB : PRISON LIFE " .. Fluent.Version,
+    SubTitle = "By Not Legitty Matrix Community",
+    TabWidth = 160,
+    Size = UDim2.fromOffset(580, 460),
+    Acrylic = true,
+    Theme = "Dark",
+    MinimizeKey = Enum.KeyCode.RightControl
+})
+
+-- Tabs
+local Tabs = {
+    Main = Window:AddTab({ Title = "Main", Icon = "home" }),
+    Combat = Window:AddTab({ Title = "Combat", Icon = "sword" }),
+    Player = Window:AddTab({ Title = "Player", Icon = "user" }),
+    Visuals = Window:AddTab({ Title = "Visuals", Icon = "eye" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+-- Variáveis para o bypass
+local Remotes = {
+    Arrest = ReplicatedStorage:FindFirstChild("ArrestPlayer") or ReplicatedStorage:FindFirstChild("ArrestRemote"),
+    Shoot = ReplicatedStorage:FindFirstChild("ShootEvent") or ReplicatedStorage:FindFirstChild("ShootRemote")
+}
+
+local BypassEnabled = false
+local ArrestBypass = false
+local GunBypass = false
+
+-- Funções de Bypass
+local function FEArrestBypass(target)
+    if not ArrestBypass or not Remotes.Arrest then return end
+    
+    local Char = Player.Character or Player.CharacterAdded:Wait()
+    local TargetChar = target.Character or target.CharacterAdded:Wait()
+    
+    if Char and TargetChar then
+        local HumanoidRootPart = Char:FindFirstChild("HumanoidRootPart")
+        local TargetRootPart = TargetChar:FindFirstChild("HumanoidRootPart")
+        
+        if HumanoidRootPart and TargetRootPart then
+            -- Salva posição original
+            local originalPos = HumanoidRootPart.CFrame
+            
+            -- Teleporta para o alvo
+            HumanoidRootPart.CFrame = TargetRootPart.CFrame * CFrame.new(0, 0, 1)
+            
+            -- Chama o remote
+            Remotes.Arrest:InvokeServer(target)
+            
+            -- Retorna à posição original
+            HumanoidRootPart.CFrame = originalPos
+        end
+    end
+end
+
+local function FEGunBypass(target)
+    if not GunBypass or not Remotes.Shoot then return end
+    
+    local Char = Player.Character or Player.CharacterAdded:Wait()
+    local TargetChar = target.Character or target.CharacterAdded:Wait()
+    
+    if Char and TargetChar then
+        local HumanoidRootPart = Char:FindFirstChild("HumanoidRootPart")
+        local TargetRootPart = TargetChar:FindFirstChild("HumanoidRootPart")
+        
+        if HumanoidRootPart and TargetRootPart then
+            -- Simula disparo
+            Remotes.Shoot:FireServer({
+                mousehit = TargetRootPart.CFrame,
+                origin = HumanoidRootPart.Position,
+                weapon = nil, -- Isso pode precisar de ajuste dependendo do jogo
+                ammo = math.huge,
+                gun = nil -- Isso pode precisar de ajuste dependendo do jogo
+            })
+        end
+    end
+end
+
+-- Grupo Main
+Tabs.Main:AddGroup("FE Bypass", {
+    Left = {
+        Tabs.Main:AddToggle("BypassToggle", {
+            Title = "Enable FE Bypass",
+            Default = false,
+            Callback = function(Value)
+                BypassEnabled = Value
+                ArrestBypass = Value
+                GunBypass = Value
+            end
+        }),
+        
+        Tabs.Main:AddToggle("ArrestBypass", {
+            Title = "Arrest Bypass",
+            Default = false,
+            Callback = function(Value)
+                ArrestBypass = Value
+            end
+        }),
+        
+        Tabs.Main:AddToggle("GunBypass", {
+            Title = "Gun Bypass",
+            Default = false,
+            Callback = function(Value)
+                GunBypass = Value
+            end
+        })
+    },
+    
+    Right = {
+        Tabs.Main:AddDropdown("ArrestTarget", {
+            Title = "Arrest Target",
+            Values = {"Nearest", "Criminal", "Guard", "Prisoner"},
+            Default = "Nearest",
+            Multi = false,
+            Callback = function(Value)
+                -- Lógica para selecionar alvo
+            end
+        }),
+        
+        Tabs.Main:AddButton({
+            Title = "Arrest All",
+            Callback = function()
+                if ArrestBypass then
+                    for _, player in ipairs(Players:GetPlayers()) do
+                        if player ~= Player then
+                            FEArrestBypass(player)
+                        end
+                    end
+                end
+            end
+        }),
+        
+        Tabs.Main:AddButton({
+            Title = "Get Gun",
+            Callback = function()
+                -- Lógica para pegar arma
+            end
+        })
+    }
+})
+
+-- Grupo Combat
+Tabs.Combat:AddGroup("Combat", {
+    Left = {
+        Tabs.Combat:AddToggle("AutoArrest", {
+            Title = "Auto Arrest",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para auto arrest
+            end
+        }),
+        
+        Tabs.Combat:AddToggle("AutoShoot", {
+            Title = "Auto Shoot",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para auto shoot
+            end
+        }),
+        
+        Tabs.Combat:AddSlider("HitChance", {
+            Title = "Hit Chance %",
+            Description = "Chance de acertar o alvo",
+            Default = 100,
+            Min = 0,
+            Max = 100,
+            Rounding = 0,
+            Callback = function(Value)
+                -- Lógica para chance de acerto
+            end
+        })
+    },
+    
+    Right = {
+        Tabs.Combat:AddToggle("SilentAim", {
+            Title = "Silent Aim",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para silent aim
+            end
+        }),
+        
+        Tabs.Combat:AddToggle("TriggerBot", {
+            Title = "Trigger Bot",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para trigger bot
+            end
+        }),
+        
+        Tabs.Combat:AddToggle("NoRecoil", {
+            Title = "No Recoil",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para no recoil
+            if Value then
+                    local oldNamecall
+                    oldNamecall = hookmetamethod(game, "__namecall", function(self, ...)
+                        if getnamecallmethod() == "Recoil" and not checkcaller() then
+                            return
+                        end
+                        return oldNamecall(self, ...)
+                    end)
+                else
+                    -- Restaurar recoil
+                end
+            end
+        })
+    }
+})
+
+-- Grupo Player
+Tabs.Player:AddGroup("Player", {
+    Left = {
+        Tabs.Player:AddToggle("SpeedHack", {
+            Title = "Speed Hack",
+            Default = false,
+            Callback = function(Value)
+                if Value then
+                    Humanoid.WalkSpeed = 50
+                else
+                    Humanoid.WalkSpeed = 16
+                end
+            end
+        }),
+        
+        Tabs.Player:AddSlider("SpeedValue", {
+            Title = "Speed Value",
+            Default = 50,
+            Min = 16,
+            Max = 200,
+            Rounding = 0,
+            Callback = function(Value)
+                if Humanoid then
+                    Humanoid.WalkSpeed = Value
+                end
+            end
+        }),
+        
+        Tabs.Player:AddToggle("JumpPower", {
+            Title = "High Jump",
+            Default = false,
+            Callback = function(Value)
+                if Value then
+                    Humanoid.JumpPower = 100
+                else
+                    Humanoid.JumpPower = 50
+                end
+            end
+        })
+    },
+    
+    Right = {
+        Tabs.Player:AddToggle("Noclip", {
+            Title = "Noclip",
+            Default = false,
+            Callback = function(Value)
+                if Value then
+                    RunService.Stepped:Connect(function()
+                        if Character then
+                            for _, part in pairs(Character:GetDescendants()) do
+                                if part:IsA("BasePart") then
+                                    part.CanCollide = false
+                                end
+                            end
+                        end
+                    end)
+                else
+                    -- Desativar noclip
+                end
+            end
+        }),
+        
+        Tabs.Player:AddToggle("InfiniteStamina", {
+            Title = "Infinite Stamina",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para stamina infinita
+            end
+        }),
+        
+        Tabs.Player:AddToggle("AntiArrest", {
+            Title = "Anti Arrest",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para anti arrest
+            end
+        })
+    }
+})
+
+-- Grupo Visuals
+Tabs.Visuals:AddGroup("ESP", {
+    Left = {
+        Tabs.Visuals:AddToggle("PlayerESP", {
+            Title = "Player ESP",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para ESP de jogadores
+            end
+        }),
+        
+        Tabs.Visuals:AddColorPicker("ESPColor", {
+            Title = "ESP Color",
+            Default = Color3.fromRGB(0, 255, 0),
+            Callback = function(Value)
+                -- Lógica para cor do ESP
+            end
+        }),
+        
+        Tabs.Visuals:AddToggle("Tracers", {
+            Title = "Tracers",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para tracers
+            end
+        })
+    },
+    
+    Right = {
+        Tabs.Visuals:AddToggle("BoxESP", {
+            Title = "Box ESP",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para box ESP
+            end
+        }),
+        
+        Tabs.Visuals:AddToggle("NameTags", {
+            Title = "Name Tags",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para name tags
+            end
+        }),
+        
+        Tabs.Visuals:AddToggle("Chams", {
+            Title = "Chams",
+            Default = false,
+            Callback = function(Value)
+                -- Lógica para chams
+            end
+        })
+    }
+})
+
+-- Grupo Settings
+Tabs.Settings:AddGroup("UI Settings", {
+    Left = {
+        Tabs.Settings:AddDropdown("UITheme", {
+            Title =
