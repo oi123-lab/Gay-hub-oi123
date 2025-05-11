@@ -3556,8 +3556,8 @@ end
 
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 local Window = Fluent:CreateWindow({
-  Title = "redz Hub : Blox Fruits",
-  SubTitle = "[ Old Source Free ]",
+  Title = "MATRIX HUB : Blox Fruits",
+  SubTitle = "[ BY MATRIX COMMUNITY ]",
   TabWidth = 160,
   Size = UDim2.fromOffset(580, 460),
   Acrylic = false,
