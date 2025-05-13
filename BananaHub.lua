@@ -1,7 +1,3 @@
-local windy = loadstring(game:HttpGet("https://raw.githubusercontent.com/MaGiXxScripter0/keysystemv2api/master/ui/notify_ui.lua"))()
-windy.New("Join Discord: discord.gg/windyhub", 8)
-
-
 if game.PlaceId == 2753915549 then
     World1 = true
 elseif game.PlaceId == 4442272183 then
